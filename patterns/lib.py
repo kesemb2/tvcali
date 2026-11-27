@@ -31,6 +31,25 @@ def ire(percent: float) -> int:
     return int(round(64 + 876 * percent / 100.0))
 
 
+# SMPTE ST 2084 (PQ) constants.
+_M1, _M2 = 2610 / 16384, 2523 / 4096 * 128
+_C1, _C2, _C3 = 3424 / 4096, 2413 / 4096 * 32, 2392 / 4096 * 32
+
+
+def pq(nits: float) -> int:
+    """Absolute luminance in cd/m² -> 10-bit limited-range PQ code (grey: Y' = R' = G' = B')."""
+    y = max(nits, 0.0) / 10000.0
+    e = ((_C1 + _C2 * y ** _M1) / (1 + _C3 * y ** _M1)) ** _M2
+    return int(round(64 + 876 * e))
+
+
+def pq_nits(code: np.ndarray | int) -> np.ndarray:
+    """10-bit limited-range PQ code -> cd/m² (inverse of [pq]); used for MaxCLL / MaxFALL."""
+    e = np.clip((np.asarray(code, dtype=np.float64) - 64) / 876, 0, 1)
+    p = e ** (1 / _M2)
+    return 10000 * (np.maximum(p - _C1, 0) / (_C2 - _C3 * p)) ** (1 / _M1)
+
+
 def rgb_to_ycbcr(r: float, g: float, b: float, matrix=BT709) -> tuple[int, int, int]:
     """Non-linear R'G'B' in 0..1 -> 10-bit limited-range Y'CbCr codes."""
     kr, kb = matrix
