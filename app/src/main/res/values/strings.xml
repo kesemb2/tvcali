@@ -164,4 +164,38 @@
     <string name="tab_dv">Dolby Vision</string>
     <string name="tab_note_hdr10plus">The same patterns with HDR10+ metadata: the TV should show HDR10+ and use its HDR10+ picture settings.</string>
     <string name="tab_note_dv">Experimental: the same patterns as Dolby Vision profile 8.1. If the TV shows a Dolby Vision badge, they calibrate its Dolby Vision mode; if it shows HDR10, the box or the TV did not take them as Dolby Vision.</string>
+
+    <!-- Wizard -->
+    <string name="wizard_title">Calibration guide</string>
+    <string name="wizard_subtitle">One flow per format: the TV keeps separate picture settings for each. Each flow starts by playing that format, so the TV is in the right mode.</string>
+    <string name="wizard_progress">%1$d of %2$d steps</string>
+    <string name="wizard_summary">Summary and export</string>
+    <string name="wizard_needs_patterns">The guide plays test patterns: open Test patterns once so they download.</string>
+    <string name="wizard_step_of">%1$s · step %2$d of %3$d</string>
+    <string name="wizard_start">Start</string>
+    <string name="wizard_continue">Continue from step %1$d</string>
+    <string name="wizard_restart">Start over</string>
+    <string name="wizard_menu_path">Menu path</string>
+    <string name="wizard_recommended">Recommended</string>
+    <string name="wizard_your_value">Your value</string>
+    <string name="wizard_correct">Correct</string>
+    <string name="wizard_wrong">Wrong</string>
+    <string name="wizard_done">Done</string>
+    <string name="wizard_skip">Skip</string>
+    <string name="wizard_not_found">Can\'t find the setting</string>
+    <string name="wizard_hide">Show the pattern</string>
+    <string name="wizard_hidden_hint">OK shows the instructions</string>
+    <string name="wizard_edit_path">Menu path on your TV</string>
+    <string name="wizard_edit_value">The value you chose</string>
+    <string name="wizard_save">Save</string>
+    <string name="wizard_edit_hint">OK to edit</string>
+    <string name="wizard_finished">%1$s is done</string>
+    <string name="wizard_finished_desc">The values are saved. You can go back to any step, or see everything in the summary.</string>
+    <string name="wizard_back_to_flows">Back to the flows</string>
+    <string name="status_done">Done</string>
+    <string name="status_skipped">Skipped</string>
+    <string name="status_not_found">Not found</string>
+    <string name="status_open">Not yet</string>
+    <string name="summary_title">Calibration summary</string>
+    <string name="summary_scan">Scan with your phone to keep the %1$s settings</string>
 </resources>

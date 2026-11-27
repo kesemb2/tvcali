@@ -25,7 +25,7 @@ import io.github.kesemb2.calibrate.ui.theme.LocalGlassType
 import io.github.kesemb2.calibrate.ui.theme.Spacing
 
 @Composable
-fun HomeScreen(onOpenChain: () -> Unit, onOpenPatterns: () -> Unit) {
+fun HomeScreen(onOpenChain: () -> Unit, onOpenPatterns: () -> Unit, onOpenWizard: () -> Unit) {
     val type = LocalGlassType.current
     val first = remember { FocusRequester() }
     Screen(Modifier.fillMaxSize()) {
@@ -51,8 +51,9 @@ fun HomeScreen(onOpenChain: () -> Unit, onOpenPatterns: () -> Unit) {
                 HomeTile(
                     title = stringResource(R.string.home_wizard),
                     description = stringResource(R.string.home_wizard_desc),
-                    badge = stringResource(R.string.coming_in_stage, 3),
+                    badge = null,
                     modifier = Modifier.weight(1f),
+                    onClick = onOpenWizard,
                 )
             }
             Spacer(Modifier.weight(1f))

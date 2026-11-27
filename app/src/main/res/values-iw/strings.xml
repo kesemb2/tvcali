@@ -164,4 +164,38 @@
     <string name="tab_dv">Dolby Vision</string>
     <string name="tab_note_hdr10plus">אותן תבניות עם מטא-דאטה של HDR10+: הטלוויזיה אמורה להציג HDR10+ ולעבוד עם הגדרות התמונה של HDR10+.</string>
     <string name="tab_note_dv">ניסיוני: אותן תבניות כ-Dolby Vision פרופיל 8.1. אם הטלוויזיה מציגה סמל Dolby Vision, הן מכיילות את מצב ה-Dolby Vision שלה; אם היא מציגה HDR10, הקופסה או הטלוויזיה לא קיבלו אותן כ-Dolby Vision.</string>
+
+    <!-- Wizard -->
+    <string name="wizard_title">אשף כיול</string>
+    <string name="wizard_subtitle">זרימה נפרדת לכל פורמט: הטלוויזיה שומרת הגדרות תמונה נפרדות לכל אחד. כל זרימה מתחילה בניגון של אותו פורמט, כדי שהטלוויזיה תהיה במצב הנכון.</string>
+    <string name="wizard_progress">%1$d מתוך %2$d שלבים</string>
+    <string name="wizard_summary">סיכום וייצוא</string>
+    <string name="wizard_needs_patterns">האשף מנגן תבניות בדיקה: פתח פעם אחת את "תבניות בדיקה" כדי שיירדו.</string>
+    <string name="wizard_step_of">%1$s · שלב %2$d מתוך %3$d</string>
+    <string name="wizard_start">להתחיל</string>
+    <string name="wizard_continue">להמשיך משלב %1$d</string>
+    <string name="wizard_restart">להתחיל מחדש</string>
+    <string name="wizard_menu_path">נתיב בתפריט</string>
+    <string name="wizard_recommended">מומלץ</string>
+    <string name="wizard_your_value">הערך שלך</string>
+    <string name="wizard_correct">נכון</string>
+    <string name="wizard_wrong">שגוי</string>
+    <string name="wizard_done">בוצע</string>
+    <string name="wizard_skip">דלג</string>
+    <string name="wizard_not_found">לא מוצא את ההגדרה</string>
+    <string name="wizard_hide">להציג את התבנית</string>
+    <string name="wizard_hidden_hint">OK מציג את ההוראות</string>
+    <string name="wizard_edit_path">הנתיב בתפריט של הטלוויזיה שלך</string>
+    <string name="wizard_edit_value">הערך שבחרת</string>
+    <string name="wizard_save">לשמור</string>
+    <string name="wizard_edit_hint">OK לעריכה</string>
+    <string name="wizard_finished">סיימת את %1$s</string>
+    <string name="wizard_finished_desc">הערכים נשמרו. אפשר לחזור לכל שלב, או לראות הכול במסך הסיכום.</string>
+    <string name="wizard_back_to_flows">חזרה לזרימות</string>
+    <string name="status_done">בוצע</string>
+    <string name="status_skipped">דולג</string>
+    <string name="status_not_found">לא נמצא</string>
+    <string name="status_open">עוד לא</string>
+    <string name="summary_title">סיכום הכיול</string>
+    <string name="summary_scan">סרוק בטלפון כדי לשמור את ההגדרות של %1$s</string>
 </resources>

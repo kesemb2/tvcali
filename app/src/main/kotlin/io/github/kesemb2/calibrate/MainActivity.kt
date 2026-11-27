@@ -27,6 +27,11 @@ import io.github.kesemb2.calibrate.ui.patterns.PatternsScreen
 import io.github.kesemb2.calibrate.ui.patterns.PlayerScreen
 import io.github.kesemb2.calibrate.ui.patterns.summarize
 import io.github.kesemb2.calibrate.ui.theme.GlassTypography
+import io.github.kesemb2.calibrate.ui.wizard.SummaryScreen
+import io.github.kesemb2.calibrate.ui.wizard.WizardFlowScreen
+import io.github.kesemb2.calibrate.ui.wizard.WizardHomeScreen
+import io.github.kesemb2.calibrate.wizard.WizardContent
+import io.github.kesemb2.calibrate.wizard.WizardStore
 import io.github.kesemb2.calibrate.ui.theme.LocalGlassType
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
@@ -41,6 +46,9 @@ sealed interface Destination {
     data object Patterns : Destination
     data class Player(val format: String, val index: Int) : Destination
     data object RateTest : Destination
+    data object Wizard : Destination
+    data class WizardFlow(val id: String) : Destination
+    data object WizardSummary : Destination
 }
 
 class MainActivity : ComponentActivity() {
@@ -57,11 +65,14 @@ class MainActivity : ComponentActivity() {
     private val rateResults = mutableStateOf<List<RateResult>?>(null)
     private val patternFormat = mutableStateOf(PatternFormats.SDR)
     private lateinit var patterns: PatternStore
+    private lateinit var wizardStore: WizardStore
+    private val wizard: WizardContent by lazy { WizardContent.parse(assets.open("wizard.json").bufferedReader().readText()) }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val type = GlassTypography.create(this)
         patterns = PatternStore(applicationContext)
+        wizardStore = WizardStore(applicationContext)
         // First start downloads the patterns in the background; later starts find them on disk.
         loadPatterns()
 
@@ -77,6 +88,7 @@ class MainActivity : ComponentActivity() {
                 when (val d = stack.value.last()) {
                     Destination.Home -> HomeScreen(
                         onOpenChain = { open(Destination.Chain); runChainCheck() },
+                        onOpenWizard = { open(Destination.Wizard) },
                         onOpenPatterns = {
                             // A failed download (no network, release not published yet) retries on every visit.
                             if (patterns.state.value is PatternStore.State.Failed) loadPatterns()
@@ -90,6 +102,28 @@ class MainActivity : ComponentActivity() {
                         rateAvailable = (patternState as? PatternStore.State.Ready)?.manifest?.rateTests?.isNotEmpty() == true,
                         onRunRateTest = { open(Destination.RateTest) },
                     )
+                    Destination.Wizard -> WizardHomeScreen(
+                        content = wizard,
+                        store = wizardStore,
+                        patternsReady = patternState is PatternStore.State.Ready,
+                        onOpenFlow = { open(Destination.WizardFlow(it)) },
+                        onSummary = { open(Destination.WizardSummary) },
+                    )
+                    is Destination.WizardFlow -> {
+                        val ready = patternState as? PatternStore.State.Ready
+                        val flow = wizard.flow(d.id)
+                        if (ready != null && flow != null) {
+                            WizardFlowScreen(
+                                content = wizard,
+                                flow = flow,
+                                store = wizardStore,
+                                patternOf = { id -> ready.manifest.patterns.firstOrNull { it.id == id }?.let { it to patterns.file(it) } },
+                                onExit = { back() },
+                                onSummary = { back(); open(Destination.WizardSummary) },
+                            )
+                        }
+                    }
+                    Destination.WizardSummary -> SummaryScreen(wizard, wizardStore)
                     Destination.RateTest -> {
                         val ready = patternState as? PatternStore.State.Ready
                         if (ready != null) {
@@ -120,6 +154,10 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    private fun back() {
+        if (stack.value.size > 1) stack.value = stack.value.dropLast(1)
     }
 
     private fun open(destination: Destination) {

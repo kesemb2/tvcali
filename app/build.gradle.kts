@@ -108,6 +108,7 @@ dependencies {
     implementation(libs.activity.compose)
     implementation(libs.kotlinx.coroutines.android)
     implementation(libs.media3.exoplayer)
+    implementation(libs.zxing.core)
 
     testImplementation(libs.junit)
     // Android's org.json is a stub on the JVM; unit tests use the reference implementation.

@@ -1,0 +1,376 @@
+{
+  "version": 1,
+  "note": "Calibration guide content. Edit freely: no code change needed. Menu paths are defaults; the user can override each one on the TV. A flow only ever plays patterns of its own format (switching format would move the TV to another picture mode): SDR flows use 'pattern' (sdr_*) or 'pattern_sdr'; HDR flows use 'pattern' when it is an hdr_* id, else 'pattern_hdr', else the flow's start pattern, and the HDR10+ / Dolby Vision flows play their own version of that hdr_* pattern. 'hdr' overrides texts in HDR flows.",
+  "steps": {
+    "picture_mode_sdr": {
+      "title": "מצב תמונה",
+      "what": "בחר את מצב התמונה המדויק ביותר. זו נקודת ההתחלה של כל השלבים הבאים, וההגדרות נשמרות בנפרד לכל מצב.",
+      "menu": "הגדרות › תמונה › מצב תמונה",
+      "recommended": "Filmmaker (אם אין: Movie / סרט)",
+      "pattern": "sdr_grayscale",
+      "correct": "האפורים ניטרליים וחמימים מעט, בלי צבעים מוגזמים.",
+      "wrong": "תמונה כחלחלה ובוהקת (Standard / Vivid) או צבעים זוהרים.",
+      "tv_setting": "picture_mode"
+    },
+    "picture_mode_hdr": {
+      "title": "מצב תמונה ל-HDR",
+      "what": "כשהטלוויזיה במצב HDR, בחר שוב מצב תמונה: לכל פורמט HDR יש רשימת מצבים והגדרות משלו.",
+      "menu": "הגדרות › תמונה › מצב תמונה",
+      "recommended": "Filmmaker (אם אין: Movie / סרט)",
+      "pattern": "hdr_grayscale",
+      "correct": "תג HDR מופיע, והאפורים ניטרליים.",
+      "wrong": "Vivid / Dynamic: הכול בהיר מדי והלבנים מתמזגים.",
+      "tv_setting": "picture_mode"
+    },
+    "picture_mode_dv": {
+      "title": "מצב תמונה ל-Dolby Vision",
+      "what": "בחר את מצב ה-Dolby Vision שמכוון לחדר חשוך. ב-Dolby Vision הטלוויזיה עושה את רוב ההתאמה לפי המטא-דאטה, ולכן יש פחות הגדרות לכוונן.",
+      "menu": "הגדרות › תמונה › מצב תמונה",
+      "recommended": "Dolby Vision Dark",
+      "pattern": "hdr_grayscale",
+      "correct": "מופיע סמל Dolby Vision, ומצב התמונה הוא Dark.",
+      "wrong": "Dolby Vision Bright / Vivid: הכול בהיר והשחורים מאפירים.",
+      "tv_setting": "picture_mode"
+    },
+    "dv_iq": {
+      "title": "Dolby Vision IQ",
+      "what": "IQ משנה את התמונה לפי אור החדר. לצפייה בחדר חשוך כבה אותו כדי לקבל את התמונה כפי שנוצרה. אם אתה צופה גם ביום באור חזק, אפשר להשאיר אותו דלוק.",
+      "menu": "הגדרות › תמונה › Dolby Vision IQ",
+      "recommended": "כבוי (בחדר חשוך)",
+      "pattern": "hdr_grayscale",
+      "correct": "הבהירות לא משתנה כשמדליקים או מכבים אור בחדר.",
+      "wrong": "התמונה מתבהרת או מתכהה מעצמה כשאור החדר משתנה."
+    },
+    "eco": {
+      "title": "חיסכון באנרגיה",
+      "what": "מצבי חיסכון מגבילים את הבהירות ומשנים אותה בלי שליטה.",
+      "menu": "הגדרות › מערכת › חשמל ואנרגיה › מצב חיסכון",
+      "recommended": "כבוי",
+      "pattern": "sdr_grayscale",
+      "correct": "הבהירות יציבה.",
+      "wrong": "התמונה מתעמעמת אחרי כמה שניות או בתמונות בהירות.",
+      "hdr": {
+        "what": "בחר את אותו ערך שבחרת ב-SDR. במצב HDR יש לטלוויזיה הגדרה נפרדת, ולכן צריך לקבוע אותה שוב.",
+        "correct": "אותו ערך כמו ב-SDR.",
+        "wrong": "ההגדרה חזרה לברירת המחדל של מצב ה-HDR."
+      }
+    },
+    "light_sensor": {
+      "title": "חיישן אור",
+      "what": "החיישן משנה את הבהירות לפי אור החדר, ומבטל כל כיול שתעשה.",
+      "menu": "הגדרות › תמונה › חיישן אור / בהירות אוטומטית",
+      "recommended": "כבוי",
+      "pattern": "sdr_grayscale",
+      "correct": "הבהירות לא משתנה כשאור החדר משתנה.",
+      "wrong": "התמונה משנה בהירות מעצמה.",
+      "tv_setting": "tv_picture_light_sensor",
+      "hdr": {
+        "what": "בחר את אותו ערך שבחרת ב-SDR. במצב HDR יש לטלוויזיה הגדרה נפרדת, ולכן צריך לקבוע אותה שוב.",
+        "correct": "אותו ערך כמו ב-SDR.",
+        "wrong": "ההגדרה חזרה לברירת המחדל של מצב ה-HDR."
+      }
+    },
+    "dynamic_contrast": {
+      "title": "Dynamic contrast",
+      "what": "ניגודיות דינמית מעוותת את הגאמה ומחשיכה צללים או מבהירה אזורים לפי התוכן.",
+      "menu": "הגדרות › תמונה › הגדרות מתקדמות › Dynamic contrast",
+      "recommended": "כבוי",
+      "pattern": "sdr_grayscale",
+      "correct": "11 המדרגות עולות באופן אחיד, והרמפה הכהה חלקה.",
+      "wrong": "המדרגות הכהות נבלעות או קופצות.",
+      "hdr": {
+        "what": "בחר את אותו ערך שבחרת ב-SDR. במצב HDR יש לטלוויזיה הגדרה נפרדת, ולכן צריך לקבוע אותה שוב.",
+        "correct": "אותו ערך כמו ב-SDR.",
+        "wrong": "ההגדרה חזרה לברירת המחדל של מצב ה-HDR."
+      }
+    },
+    "vivid_color": {
+      "title": "משפר צבע (Vivid color engine)",
+      "what": "מעצים צבעים מעבר למה שהתוכן מכיל.",
+      "menu": "הגדרות › תמונה › הגדרות מתקדמות › משפר צבע",
+      "recommended": "כבוי",
+      "pattern": "sdr_color_bars",
+      "correct": "פסי ה-75% נראים רוויים אבל לא זוהרים, והלבן ניטרלי.",
+      "wrong": "צבעים זוהרים ומוגזמים, גוון עור כתמתם.",
+      "hdr": {
+        "what": "בחר את אותו ערך שבחרת ב-SDR. במצב HDR יש לטלוויזיה הגדרה נפרדת, ולכן צריך לקבוע אותה שוב.",
+        "correct": "אותו ערך כמו ב-SDR.",
+        "wrong": "ההגדרה חזרה לברירת המחדל של מצב ה-HDR."
+      }
+    },
+    "super_resolution": {
+      "title": "Super resolution",
+      "what": "מחדד ומוסיף פרטים מלאכותיים. בתוכן 4K טוב הוא רק מוסיף הילות ורעש.",
+      "menu": "הגדרות › תמונה › הגדרות מתקדמות › Super resolution",
+      "recommended": "כבוי",
+      "pattern": "sdr_sharpness",
+      "correct": "אין ריצוד או moiré בקווים הדקים.",
+      "wrong": "הקווים הדקים מרצדים או מקבלים הילות.",
+      "hdr": {
+        "what": "בחר את אותו ערך שבחרת ב-SDR. במצב HDR יש לטלוויזיה הגדרה נפרדת, ולכן צריך לקבוע אותה שוב.",
+        "correct": "אותו ערך כמו ב-SDR.",
+        "wrong": "ההגדרה חזרה לברירת המחדל של מצב ה-HDR."
+      }
+    },
+    "noise_reduction": {
+      "title": "Noise reduction",
+      "what": "הפחתת רעש מורחת פרטים עדינים וגרעין קולנועי. כבה את כל סוגי הפחתת הרעש (כולל MPEG / Digital NR).",
+      "menu": "הגדרות › תמונה › הגדרות מתקדמות › הפחתת רעש",
+      "recommended": "כבוי",
+      "pattern": "sdr_sharpness",
+      "correct": "קווים של פיקסל אחד נראים מקרוב.",
+      "wrong": "מרקמים עדינים נמרחים.",
+      "hdr": {
+        "what": "בחר את אותו ערך שבחרת ב-SDR. במצב HDR יש לטלוויזיה הגדרה נפרדת, ולכן צריך לקבוע אותה שוב.",
+        "correct": "אותו ערך כמו ב-SDR.",
+        "wrong": "ההגדרה חזרה לברירת המחדל של מצב ה-HDR."
+      }
+    },
+    "memc": {
+      "title": "MEMC (החלקת תנועה)",
+      "what": "MEMC מייצר פריימים ביניים ויוצר 'אפקט אופרת סבון'. לסרטים כבה אותו. אם ה-judder של 24p מפריע לך, נסה רמה נמוכה ביותר.",
+      "menu": "הגדרות › תמונה › הגדרות מתקדמות › MEMC / תנועה",
+      "recommended": "כבוי",
+      "pattern": "hdr_pan_24p",
+      "correct": "תנועה עם קפיצות קלות ואחידות, מראה קולנועי.",
+      "wrong": "תנועה חלקה לגמרי (אופרת סבון), או קפיצות לא אחידות."
+    },
+    "local_dimming": {
+      "title": "עמעום מקומי (Local dimming)",
+      "what": "392 אזורי העמעום משפרים מאוד את השחור, אבל רמה גבוהה מדי יוצרת הילות. בחר את הרמה הגבוהה ביותר שבה ההילה סביב הריבוע והכתוביות לא מפריעה.",
+      "menu": "הגדרות › תמונה › הגדרות מתקדמות › Local dimming",
+      "recommended": "גבוה או בינוני",
+      "pattern": "hdr_subtitles",
+      "correct": "השחור סביב האותיות כמעט כמו שאר המסך, והכוכבים הקטנים לא נעלמים.",
+      "wrong": "הילה אפורה סביב הטקסט, או כוכבים קטנים שנעלמים.",
+      "pattern_sdr": "sdr_overscan",
+      "sdr": {
+        "what": "ב-SDR בדוק את העמעום על הטקסט הלבן שעל הרקע השחור. בחר את אותה רמה שתבחר גם ב-HDR, אלא אם ההילה מפריעה כאן במיוחד.",
+        "correct": "השחור סביב הטקסט נשאר שחור.",
+        "wrong": "הילה אפורה סביב הטקסט."
+      }
+    },
+    "backlight_sdr": {
+      "title": "תאורה אחורית ב-SDR",
+      "what": "התאורה האחורית קובעת את בהירות הלבן ב-SDR. בחדר חשוך בחר רמה נוחה שלא מסנוורת; בחדר מואר אפשר יותר. היא לא משפיעה על השחור (את זה מכוונים ב-Brightness).",
+      "menu": "הגדרות › תמונה › תאורה אחורית",
+      "recommended": "לפי החדר (חשוך: כ-40–60, מואר: גבוה יותר)",
+      "pattern": "sdr_white_clipping",
+      "correct": "הלבן בהיר ונעים, לא מסנוור בחושך.",
+      "wrong": "לבן מסנוור בחדר חשוך, או תמונה עמומה ביום.",
+      "tv_setting": "picture_backlight"
+    },
+    "backlight_hdr": {
+      "title": "תאורה אחורית ב-HDR",
+      "what": "ב-HDR הבהירות מוגדרת בתוכן עצמו בניט מוחלטים, ולכן התאורה האחורית צריכה להיות במקסימום כדי שהטלוויזיה תגיע לבהירות שהתוכן דורש.",
+      "menu": "הגדרות › תמונה › תאורה אחורית",
+      "recommended": "מקסימום",
+      "pattern": "hdr_white_clipping_1000",
+      "correct": "המשבצות עד 1000 בהירות ונבדלות.",
+      "wrong": "הכול עמום, והמשבצות הבהירות נראות אפורות.",
+      "tv_setting": "picture_backlight"
+    },
+    "brightness_sdr": {
+      "title": "Brightness (רמת שחור)",
+      "what": "העלה עד שהפס 12 נראה, ואז הורד עד ש-12 בדיוק נעלם בזמן ש-20 עדיין נראה בקושי. כדאי בחדר חשוך.",
+      "menu": "הגדרות › תמונה › בהירות",
+      "recommended": "בדרך כלל ברירת המחדל (50) או קרוב לה",
+      "pattern": "sdr_pluge",
+      "correct": "12 לא נראה, 20 ו-25 נראים.",
+      "wrong": "20 לא נראה (צללים נבלעים) או 12 נראה (שחור אפור)."
+    },
+    "brightness_hdr": {
+      "title": "Brightness / רמת שחור ב-HDR",
+      "what": "אותו עיקרון ב-HDR: הפס 56 (מתחת לשחור) צריך להיעלם, 72 ו-80 צריכים להיראות בקושי.",
+      "menu": "הגדרות › תמונה › בהירות",
+      "recommended": "בדרך כלל ברירת המחדל",
+      "pattern": "hdr_black_clipping",
+      "correct": "56 לא נראה, 72 ו-80 נראים בקושי.",
+      "wrong": "72 לא נראה (צללים נבלעים) או 56 נראה."
+    },
+    "contrast_sdr": {
+      "title": "Contrast (לבן)",
+      "what": "העלה עד שהמשבצות שליד 235 מתחילות להתמזג, ואז הורד עד שכולן עד 235 נבדלות והלבן נשאר ניטרלי.",
+      "menu": "הגדרות › תמונה › ניגודיות",
+      "recommended": "הגבוה ביותר בלי התמזגות עד 235",
+      "pattern": "sdr_white_clipping",
+      "correct": "כל משבצת עד 235 נבדלת, הלבן ניטרלי.",
+      "wrong": "230–235 מתמזגות, או שהלבן מקבל גוון."
+    },
+    "contrast_hdr": {
+      "title": "Contrast ב-HDR",
+      "what": "ב-HDR השאר את Contrast בברירת המחדל של מצב Filmmaker/Movie, ובדוק שהמשבצות עד 1000 נבדלות.",
+      "menu": "הגדרות › תמונה › ניגודיות",
+      "recommended": "ברירת המחדל של המצב",
+      "pattern": "hdr_white_clipping_1000",
+      "correct": "משבצות עד 1000 נבדלות.",
+      "wrong": "משבצות 700–1000 מתמזגות."
+    },
+    "tone_mapping": {
+      "title": "Tone mapping (מיפוי HDR)",
+      "what": "תוכן שמאסטר ל-4000 ניט בהיר מהטלוויזיה, והיא צריכה למפות אותו. אם יש הגדרה כמו Dynamic tone mapping / HDR enhancer, בחר את הערך שבו גם המשבצות 1500–4000 בתבנית נבדלות, בלי שכל התמונה מתבהרת.",
+      "menu": "הגדרות › תמונה › הגדרות מתקדמות › Dynamic tone mapping",
+      "recommended": "דלוק / סטנדרטי (בדוק בתבנית)",
+      "pattern": "hdr_white_clipping_4000",
+      "correct": "משבצות עד 4000 עדיין נבדלות, ברכות.",
+      "wrong": "כל מה שמעל ~1000 הוא לבן אחד, או שכל התמונה מתבהרת."
+    },
+    "sharpness": {
+      "title": "Sharpness",
+      "what": "הורד עד שאין הילות לאורך הקווים הדקים על הרקע האפור.",
+      "menu": "הגדרות › תמונה › חדות",
+      "recommended": "0 או הנמוך ביותר בלי טשטוש",
+      "pattern": "sdr_sharpness",
+      "correct": "אין הילות בהירות או כהות לצד הקווים.",
+      "wrong": "קווים עם 'צל' לבן או שחור לידם.",
+      "hdr": {
+        "what": "בחר את אותו ערך שבחרת ב-SDR (בדרך כלל 0). אין תבנית חדות נפרדת ל-HDR, ולכן הערך מ-SDR הוא ההפניה.",
+        "correct": "אותו ערך כמו ב-SDR.",
+        "wrong": "ההגדרה חזרה לברירת המחדל של מצב ה-HDR."
+      }
+    },
+    "color_temperature": {
+      "title": "טמפרטורת צבע",
+      "what": "הלבן הנכון (D65) נראה חמים מעט למי שמורגל ללבן כחלחל. אחרי כמה ימים העין מתרגלת.",
+      "menu": "הגדרות › תמונה › טמפרטורת צבע",
+      "recommended": "Warm (אם יש שתיים: Warm2 / החמים יותר)",
+      "pattern": "sdr_grayscale",
+      "correct": "אפורים ניטרליים, נייר לבן נראה כמו נייר.",
+      "wrong": "אפורים כחלחלים (Cool / Standard).",
+      "hdr": {
+        "what": "בחר את אותו ערך שבחרת ב-SDR. במצב HDR יש לטלוויזיה הגדרה נפרדת, ולכן צריך לקבוע אותה שוב.",
+        "correct": "אותו ערך כמו ב-SDR.",
+        "wrong": "ההגדרה חזרה לברירת המחדל של מצב ה-HDR."
+      }
+    },
+    "gamma": {
+      "title": "גאמה",
+      "what": "2.4 לצפייה בחדר חשוך (הסטנדרט לקולנוע ביתי), 2.2 לחדר מואר.",
+      "menu": "הגדרות › תמונה › הגדרות מתקדמות › גאמה",
+      "recommended": "2.4 בחדר חשוך, 2.2 בחדר מואר",
+      "pattern": "sdr_grayscale",
+      "correct": "צללים עמוקים אבל עם פרטים, המדרגות עולות באופן אחיד.",
+      "wrong": "תמונה שטוחה ובהירה (גאמה נמוכה) או צללים חנוקים."
+    },
+    "color_space": {
+      "title": "מרחב צבע",
+      "what": "Auto מאפשר לטלוויזיה לבחור את מרחב הצבע לפי התוכן (BT.709 ל-SDR, BT.2020 ל-HDR). Native מרחיב את הצבעים בלי סיבה.",
+      "menu": "הגדרות › תמונה › הגדרות מתקדמות › מרחב צבע",
+      "recommended": "Auto",
+      "pattern": "sdr_color_bars",
+      "correct": "צבעים טבעיים, גווני עור רגילים.",
+      "wrong": "ירוקים ואדומים זוהרים (Native / Wide).",
+      "hdr": {
+        "what": "בחר את אותו ערך שבחרת ב-SDR. במצב HDR יש לטלוויזיה הגדרה נפרדת, ולכן צריך לקבוע אותה שוב.",
+        "correct": "אותו ערך כמו ב-SDR.",
+        "wrong": "ההגדרה חזרה לברירת המחדל של מצב ה-HDR."
+      }
+    },
+    "overscan": {
+      "title": "גודל תמונה (Overscan)",
+      "what": "הטלוויזיה צריכה להציג כל פיקסל בלי לחתוך את השוליים.",
+      "menu": "הגדרות › תמונה › גודל תמונה / Screen fit",
+      "recommended": "Just scan / Screen fit / Overscan כבוי",
+      "pattern": "sdr_overscan",
+      "correct": "ארבעת הקווים הלבנים החיצוניים נראים.",
+      "wrong": "קו אחד או יותר חסר."
+    }
+  },
+  "flows": [
+    {
+      "id": "sdr",
+      "format": "sdr",
+      "title": "SDR",
+      "subtitle": "שידורים, YouTube ורוב התוכן הרגיל",
+      "intro": "התבנית שמתנגנת עכשיו היא SDR, כך שהטלוויזיה נמצאת במצב ה-SDR שלה. ההגדרות שתכוון כאן חלות רק על SDR.",
+      "start_pattern": "sdr_grayscale",
+      "steps": [
+        "picture_mode_sdr",
+        "eco",
+        "light_sensor",
+        "dynamic_contrast",
+        "vivid_color",
+        "super_resolution",
+        "noise_reduction",
+        "local_dimming",
+        "backlight_sdr",
+        "brightness_sdr",
+        "contrast_sdr",
+        "sharpness",
+        "color_temperature",
+        "gamma",
+        "color_space",
+        "overscan"
+      ]
+    },
+    {
+      "id": "hdr10",
+      "format": "hdr10",
+      "title": "HDR10",
+      "subtitle": "רוב ה-HDR בסטרימינג ובדיסקים",
+      "intro": "התבנית שמתנגנת עכשיו היא HDR10. ודא שהטלוויזיה מציגה HDR. ההגדרות כאן נשמרות בנפרד מ-SDR.",
+      "start_pattern": "hdr_grayscale",
+      "steps": [
+        "picture_mode_hdr",
+        "eco",
+        "light_sensor",
+        "dynamic_contrast",
+        "vivid_color",
+        "super_resolution",
+        "noise_reduction",
+        "local_dimming",
+        "backlight_hdr",
+        "brightness_hdr",
+        "contrast_hdr",
+        "tone_mapping",
+        "sharpness",
+        "color_temperature",
+        "color_space",
+        "memc"
+      ]
+    },
+    {
+      "id": "hdr10plus",
+      "format": "hdr10plus",
+      "title": "HDR10+",
+      "subtitle": "Prime Video ועוד: HDR עם מטא-דאטה דינמית",
+      "intro": "התבנית שמתנגנת עכשיו היא HDR10+. ודא שהטלוויזיה מציגה HDR10+. לטלוויזיה יש הגדרות נפרדות ל-HDR10+.",
+      "start_pattern": "hdr_grayscale",
+      "steps": [
+        "picture_mode_hdr",
+        "light_sensor",
+        "dynamic_contrast",
+        "vivid_color",
+        "super_resolution",
+        "noise_reduction",
+        "local_dimming",
+        "backlight_hdr",
+        "brightness_hdr",
+        "contrast_hdr",
+        "tone_mapping",
+        "sharpness",
+        "color_temperature",
+        "memc"
+      ]
+    },
+    {
+      "id": "dv",
+      "format": "dv81",
+      "title": "Dolby Vision",
+      "subtitle": "Netflix, Disney+, Apple TV+",
+      "intro": "התבנית שמתנגנת עכשיו היא Dolby Vision. ודא שהטלוויזיה מציגה Dolby Vision. ההגדרות כאן חלות רק על Dolby Vision.",
+      "start_pattern": "hdr_grayscale",
+      "steps": [
+        "picture_mode_dv",
+        "dv_iq",
+        "light_sensor",
+        "local_dimming",
+        "brightness_hdr",
+        "sharpness",
+        "noise_reduction",
+        "super_resolution",
+        "memc"
+      ]
+    }
+  ]
+}
