@@ -219,7 +219,7 @@ def verify_dovi(out: str, frames: int, work: str) -> str:
     info = json.loads(run(["ffprobe", "-v", "error", "-show_streams", "-of", "json", out]))["streams"][0]
     conf = next((d for d in info.get("side_data_list", []) if "DOVI" in d.get("side_data_type", "").upper()), None)
     if not conf:
-        raise SystemExit(f"{out}: no Dolby Vision configuration record (dvcC) in the MP4")
+        raise SystemExit(f"{out}: no Dolby Vision configuration record (dvvC) in the MP4")
     want = {"dv_version_major": 1, "dv_profile": 8, "rpu_present_flag": 1, "el_present_flag": 0,
             "bl_present_flag": 1, "dv_bl_signal_compatibility_id": 1}
     wrong = {k: (conf.get(k), v) for k, v in want.items() if conf.get(k) != v}
@@ -232,4 +232,4 @@ def verify_dovi(out: str, frames: int, work: str) -> str:
     if str(frames) not in summary or "8" not in summary:
         raise SystemExit(f"{out}: unexpected RPU summary:\n{summary}")
     first = summary.strip().splitlines()
-    return f"Dolby Vision 8.1, dvcC ok, RPU: {' / '.join(l.strip() for l in first[:4])}"
+    return f"Dolby Vision 8.1, dvvC ok, RPU: {' / '.join(l.strip() for l in first[:4])}"
