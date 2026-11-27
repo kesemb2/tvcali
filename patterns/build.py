@@ -14,6 +14,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 import sys
 from dataclasses import dataclass, field
@@ -22,6 +23,7 @@ from typing import Callable
 import hdr
 import ratetest
 import sdr
+import variants
 from lib import Frame, H, W, pq_nits
 
 VERSION = int(open(os.path.join(os.path.dirname(__file__), "VERSION")).read().strip())
@@ -45,6 +47,7 @@ class Spec:
     master: int = 1000  # mastering peak, cd/m² (HDR10)
     declared_cll: int | None = None  # MaxCLL to declare instead of the measured one (tone-mapping tests)
     stats: dict = field(default_factory=dict)
+    frame_stats: list = field(default_factory=list)  # per-frame light statistics (HDR10+ / Dolby Vision metadata)
 
 
 def specs() -> list[Spec]:
@@ -111,6 +114,7 @@ def encode(spec: Spec, out: str, tmp: str) -> list[str]:
         if spec.fmt == "hdr10":
             peak, avg = light_level(frame)
             spec.stats = {"max_cll": spec.declared_cll or max(1, round(peak)), "max_fall": max(1, round(avg))}
+            spec.frame_stats = [variants.frame_stats(frame.y)] * spec.frames
         frame.write_raw(tmp)
         md5 = hashlib.md5(open(tmp, "rb").read()).hexdigest()
         run(base + ["-stream_loop", str(spec.frames - 1)] + raw_in + ["-i", tmp] + tail())
@@ -121,8 +125,10 @@ def encode(spec: Spec, out: str, tmp: str) -> list[str]:
     if spec.fmt == "hdr10":
         peak = avg = 0.0
         for i in range(spec.frames):
-            p, a = light_level(spec.make(i))
+            f = spec.make(i)
+            p, a = light_level(f)
             peak, avg = max(peak, p), max(avg, a)
+            spec.frame_stats.append(variants.frame_stats(f.y))
         spec.stats = {"max_cll": spec.declared_cll or max(1, round(peak)), "max_fall": max(1, round(avg))}
     proc = subprocess.Popen(base + raw_in + ["-i", "-"] + tail(),
                             stdin=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -139,12 +145,12 @@ def encode(spec: Spec, out: str, tmp: str) -> list[str]:
     return md5s
 
 
-def verify(spec: Spec, out: str, md5s: list[str]) -> None:
+def verify(spec: Spec, out: str, md5s: list[str], tags_fmt: str | None = None) -> None:
     info = json.loads(run(["ffprobe", "-v", "error", "-show_streams", "-count_frames", "-of", "json", out]))
     (s,) = info["streams"]
     num, den = spec.fps
     expect = {"codec_name": "hevc", "profile": "Main 10", "width": W, "height": H, "pix_fmt": "yuv420p10le",
-              "r_frame_rate": f"{num}/{den}", "nb_read_frames": str(spec.frames), **TAGS[spec.fmt]}
+              "r_frame_rate": f"{num}/{den}", "nb_read_frames": str(spec.frames), **TAGS[tags_fmt or spec.fmt]}
     wrong = {k: (s.get(k), v) for k, v in expect.items() if s.get(k) != v}
     if wrong:
         raise SystemExit(f"{out}: ffprobe mismatch (got, expected): {wrong}")
@@ -181,12 +187,47 @@ def verify(spec: Spec, out: str, md5s: list[str]) -> None:
         raise SystemExit(f"{out}: {bad} of {len(md5s)} decoded frames differ from their source")
 
 
+def hdr_variants(spec: Spec, base_mp4: str, md5s: list[str], base_entry: dict, out_dir: str) -> list[dict]:
+    """HDR10+ and Dolby Vision 8.1 files with the same pixels as [base_mp4], each verified like the base."""
+    if not variants.available():
+        if os.environ.get("REQUIRE_VARIANTS") == "1":
+            raise SystemExit("hdr10plus_tool, dovi_tool or MP4Box missing")
+        print(f"  (skipping HDR10+ / Dolby Vision: tools not installed)")
+        return []
+    work = os.path.join(out_dir, "work")
+    os.makedirs(work, exist_ok=True)
+    made = []
+    suffix = spec.id.removeprefix("hdr_")
+    for fmt, vid in (("hdr10plus", f"hdrp_{suffix}"), ("dv81", f"dv_{suffix}")):
+        out = os.path.join(out_dir, f"{vid}.mp4")
+        if fmt == "hdr10plus":
+            variants.make_hdr10plus(base_mp4, out, spec.frame_stats, spec.fps, work)
+        else:
+            variants.make_dovi(base_mp4, out, spec.frame_stats, spec.fps, spec.master,
+                               spec.stats["max_cll"], spec.stats["max_fall"], work)
+        verify(spec, out, md5s, tags_fmt="hdr10")  # same pixels, same HDR10 base layer and tags
+        note = (variants.verify_hdr10plus(out, spec.frame_stats, work) if fmt == "hdr10plus"
+                else variants.verify_dovi(out, spec.frames, work))
+        data = open(out, "rb").read()
+        made.append({**base_entry, "id": vid, "file": f"{vid}.mp4", "size": len(data),
+                     "sha256": hashlib.sha256(data).hexdigest(), "format": fmt, "base": spec.id,
+                     "source_md5": hashlib.md5((base_entry["source_md5"] + fmt).encode()).hexdigest()})
+        print(f"  {vid}: {len(data) // 1024} KB, bit-exact, {note}", flush=True)
+    shutil.rmtree(work, ignore_errors=True)
+    return made
+
+
 def tool_versions() -> str:
     ffmpeg = run(["ffmpeg", "-version"]).splitlines()[0]
     x265 = subprocess.run(["ffmpeg", "-hide_banner", "-f", "lavfi", "-i", "color=s=64x64:d=0.04", "-c:v", "libx265",
                            "-f", "null", "-"], capture_output=True, text=True).stderr
     x265 = next((l.strip() for l in x265.splitlines() if "HEVC encoder version" in l), "x265 ?")
-    return f"{ffmpeg} | {x265}"
+    extra = ""
+    if variants.available():
+        extra = " | " + " | ".join(variants.run([t, "--version"]).strip().splitlines()[0]
+                                   for t in (variants.TOOLS["hdr10plus"], variants.TOOLS["dovi"]))
+        extra += " | " + variants.run([variants.TOOLS["mp4box"], "-version"]).strip().splitlines()[0]
+    return f"{ffmpeg} | {x265}{extra}"
 
 
 def main() -> None:
@@ -218,6 +259,8 @@ def main() -> None:
         entries.append(entry)
         extra = f", MaxCLL {spec.stats['max_cll']} / MaxFALL {spec.stats['max_fall']}" if spec.fmt == "hdr10" else ""
         print(f"{spec.id}: {len(data) // 1024} KB, {spec.frames} frames{extra}, bit-exact", flush=True)
+        if spec.fmt == "hdr10":
+            entries += hdr_variants(spec, out, md5s, entry, out_dir)
     if os.path.exists(tmp):
         os.remove(tmp)
     manifest = {"version": VERSION, "width": W, "height": H, "patterns": entries}
