@@ -155,4 +155,13 @@
     <string name="rate_outcome_wrong">התצוגה עברה לקצב שלא מתאים לתוכן.</string>
     <string name="rate_outcome_default_no_switch">בבקשת ברירת המחדל (רק אם המעבר חלק) התצוגה לא עברה: ב-HDMI אין מעבר חלק. אפליקציות שמבקשות כך יתנגנו ב-60Hz; זה תלוי באפליקציה, לא בהגדרות שלך.</string>
     <string name="rate_outcome_default_switched">גם בבקשת ברירת המחדל התצוגה עברה: המערכת מחליפה קצב לכל האפליקציות.</string>
+
+    <string name="format_hdr10plus">HDR10+ · מטא-דאטה דינמית</string>
+    <string name="format_dv">Dolby Vision · פרופיל 8.1</string>
+    <string name="tab_sdr">SDR</string>
+    <string name="tab_hdr10">HDR10</string>
+    <string name="tab_hdr10plus">HDR10+</string>
+    <string name="tab_dv">Dolby Vision</string>
+    <string name="tab_note_hdr10plus">אותן תבניות עם מטא-דאטה של HDR10+: הטלוויזיה אמורה להציג HDR10+ ולעבוד עם הגדרות התמונה של HDR10+.</string>
+    <string name="tab_note_dv">ניסיוני: אותן תבניות כ-Dolby Vision פרופיל 8.1. אם הטלוויזיה מציגה סמל Dolby Vision, הן מכיילות את מצב ה-Dolby Vision שלה; אם היא מציגה HDR10, הקופסה או הטלוויזיה לא קיבלו אותן כ-Dolby Vision.</string>
 </resources>

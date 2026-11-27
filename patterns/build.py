@@ -80,7 +80,9 @@ def run(cmd: list[str], **kw) -> str:
 
 
 def x265_params(spec: Spec) -> str:
-    p = ["lossless=1", "keyint=600", "min-keyint=600", "log-level=error", "range=limited"]
+    # No B-frames: decode order = display order, so the HEVC stream survives the raw remux the HDR10+ and
+    # Dolby Vision tools need (raw HEVC carries no timestamps).
+    p = ["lossless=1", "bframes=0", "keyint=600", "min-keyint=600", "log-level=error", "range=limited"]
     if spec.fmt == "sdr":
         p += ["colorprim=bt709", "transfer=bt709", "colormatrix=bt709"]
     else:
@@ -191,7 +193,7 @@ def hdr_variants(spec: Spec, base_mp4: str, md5s: list[str], base_entry: dict, o
     """HDR10+ and Dolby Vision 8.1 files with the same pixels as [base_mp4], each verified like the base."""
     if not variants.available():
         if os.environ.get("REQUIRE_VARIANTS") == "1":
-            raise SystemExit("hdr10plus_tool, dovi_tool or MP4Box missing")
+            raise SystemExit("hdr10plus_tool or dovi_tool missing")
         print(f"  (skipping HDR10+ / Dolby Vision: tools not installed)")
         return []
     work = os.path.join(out_dir, "work")
@@ -226,7 +228,6 @@ def tool_versions() -> str:
     if variants.available():
         extra = " | " + " | ".join(variants.run([t, "--version"]).strip().splitlines()[0]
                                    for t in (variants.TOOLS["hdr10plus"], variants.TOOLS["dovi"]))
-        extra += " | " + variants.run([variants.TOOLS["mp4box"], "-version"]).strip().splitlines()[0]
     return f"{ffmpeg} | {x265}{extra}"
 
 

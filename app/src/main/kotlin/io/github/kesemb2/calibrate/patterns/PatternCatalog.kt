@@ -32,9 +32,27 @@ object PatternCatalog {
 
     fun text(id: String): PatternText? = texts[id]
 
+    fun text(p: PatternFile): PatternText? = texts[p.textId]
+
     fun formatLabel(format: String): Int? = when (format) {
-        "sdr" -> R.string.format_sdr
-        "hdr10" -> R.string.format_hdr10
+        PatternFormats.SDR -> R.string.format_sdr
+        PatternFormats.HDR10 -> R.string.format_hdr10
+        PatternFormats.HDR10_PLUS -> R.string.format_hdr10plus
+        PatternFormats.DOLBY_VISION -> R.string.format_dv
+        else -> null
+    }
+
+    fun tabName(format: String): Int? = when (format) {
+        PatternFormats.SDR -> R.string.tab_sdr
+        PatternFormats.HDR10 -> R.string.tab_hdr10
+        PatternFormats.HDR10_PLUS -> R.string.tab_hdr10plus
+        PatternFormats.DOLBY_VISION -> R.string.tab_dv
+        else -> null
+    }
+
+    fun tabNote(format: String): Int? = when (format) {
+        PatternFormats.HDR10_PLUS -> R.string.tab_note_hdr10plus
+        PatternFormats.DOLBY_VISION -> R.string.tab_note_dv
         else -> null
     }
 }

@@ -14,6 +14,7 @@ import io.github.kesemb2.calibrate.diag.ChainProbe
 import io.github.kesemb2.calibrate.diag.Checks
 import io.github.kesemb2.calibrate.diag.Report
 import io.github.kesemb2.calibrate.patterns.DecoderCheck
+import io.github.kesemb2.calibrate.patterns.PatternFormats
 import io.github.kesemb2.calibrate.patterns.PatternStore
 import io.github.kesemb2.calibrate.ratetest.RateResult
 import io.github.kesemb2.calibrate.ratetest.RateRules
@@ -38,7 +39,7 @@ sealed interface Destination {
     data object Home : Destination
     data object Chain : Destination
     data object Patterns : Destination
-    data class Player(val index: Int) : Destination
+    data class Player(val format: String, val index: Int) : Destination
     data object RateTest : Destination
 }
 
@@ -54,6 +55,7 @@ class MainActivity : ComponentActivity() {
     private val chain = mutableStateOf<ChainState?>(null)
     private val decoder = mutableStateOf<DecoderSummary?>(null)
     private val rateResults = mutableStateOf<List<RateResult>?>(null)
+    private val patternFormat = mutableStateOf(PatternFormats.SDR)
     private lateinit var patterns: PatternStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -105,12 +107,14 @@ class MainActivity : ComponentActivity() {
                         state = patternState,
                         decoder = decoder.value,
                         onRetry = ::loadPatterns,
-                        onOpen = { open(Destination.Player(it)) },
+                        format = patternFormat.value,
+                        onFormat = { patternFormat.value = it },
+                        onOpen = { f, i -> open(Destination.Player(f, i)) },
                     )
                     is Destination.Player -> {
                         val ready = patternState as? PatternStore.State.Ready
                         if (ready != null) {
-                            PlayerScreen(ready.manifest.viewable.map { it to patterns.file(it) }, d.index)
+                            PlayerScreen(ready.manifest.ofFormat(d.format).map { it to patterns.file(it) }, d.index)
                         }
                     }
                 }

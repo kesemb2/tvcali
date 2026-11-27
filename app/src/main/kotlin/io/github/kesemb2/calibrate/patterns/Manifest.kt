@@ -19,7 +19,11 @@ data class PatternFile(
     val motion: Boolean = false,
     val fpsNum: Int = 24000,
     val fpsDen: Int = 1001,
+    /** For HDR10+ / Dolby Vision versions: the HDR10 pattern they were made from (same pixels, same texts). */
+    val base: String? = null,
 ) {
+    /** The id whose texts describe this file. */
+    val textId: String get() = base ?: id
     val fps: Float get() = fpsNum.toFloat() / fpsDen
 }
 
@@ -27,6 +31,11 @@ data class Manifest(val version: Int, val width: Int, val height: Int, val patte
     /** What the user browses and plays. */
     val viewable: List<PatternFile> get() = patterns.filter { it.role == "pattern" }
     val rateTests: List<PatternFile> get() = patterns.filter { it.role == "ratetest" }
+
+    /** Formats present, in the order the TV keeps separate picture settings for. */
+    val formats: List<String> get() = PatternFormats.ORDER.filter { f -> viewable.any { it.format == f } }
+
+    fun ofFormat(format: String): List<PatternFile> = viewable.filter { it.format == format }
 
     companion object {
         fun parse(json: String): Manifest {
@@ -53,9 +62,18 @@ data class Manifest(val version: Int, val width: Int, val height: Int, val patte
                         motion = p.optBoolean("motion", false),
                         fpsNum = p.optInt("fps_num", 24000),
                         fpsDen = p.optInt("fps_den", 1001),
+                        base = p.optString("base").ifEmpty { null },
                     )
                 },
             )
         }
     }
+}
+
+object PatternFormats {
+    const val SDR = "sdr"
+    const val HDR10 = "hdr10"
+    const val HDR10_PLUS = "hdr10plus"
+    const val DOLBY_VISION = "dv81"
+    val ORDER = listOf(SDR, HDR10, HDR10_PLUS, DOLBY_VISION)
 }

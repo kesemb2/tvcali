@@ -155,4 +155,13 @@
     <string name="rate_outcome_wrong">The display switched to a rate that does not fit the content.</string>
     <string name="rate_outcome_default_no_switch">With the default request (only if seamless) the display did not switch: over HDMI no switch is seamless. Apps that ask this way play at 60 Hz; that is the app, not your settings.</string>
     <string name="rate_outcome_default_switched">Even with the default request the display switched: the system switches for every app.</string>
+
+    <string name="format_hdr10plus">HDR10+ · dynamic metadata</string>
+    <string name="format_dv">Dolby Vision · profile 8.1</string>
+    <string name="tab_sdr">SDR</string>
+    <string name="tab_hdr10">HDR10</string>
+    <string name="tab_hdr10plus">HDR10+</string>
+    <string name="tab_dv">Dolby Vision</string>
+    <string name="tab_note_hdr10plus">The same patterns with HDR10+ metadata: the TV should show HDR10+ and use its HDR10+ picture settings.</string>
+    <string name="tab_note_dv">Experimental: the same patterns as Dolby Vision profile 8.1. If the TV shows a Dolby Vision badge, they calibrate its Dolby Vision mode; if it shows HDR10, the box or the TV did not take them as Dolby Vision.</string>
 </resources>

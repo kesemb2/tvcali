@@ -30,12 +30,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install ffmpeg, GPAC and Python packages
+      - name: Install ffmpeg and Python packages
         run: |
           sudo apt-get update -q
-          sudo apt-get install -y -q ffmpeg gpac
+          sudo apt-get install -y -q ffmpeg
           ffmpeg -hide_banner -encoders | grep -q libx265
-          MP4Box -version 2>&1 | head -n 1
           pip install -q -r patterns/requirements.txt
 
       - name: Install dovi_tool and hdr10plus_tool (pinned)

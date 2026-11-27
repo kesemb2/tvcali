@@ -4,13 +4,15 @@ The HDR10 file is encoded once; the dynamic metadata is injected into the same l
 formats carry identical pixels and differ only in metadata. Tools (run in CI only, versions pinned in the workflow):
   hdr10plus_tool  inject ST 2094-40 SEI from per-frame JSON
   dovi_tool       generate a profile 8.1 RPU from a config, inject it
-  MP4Box (GPAC)   mux into MP4 with the Dolby Vision configuration box (dvcC) so players detect Dolby Vision
+The MP4 is muxed by ffmpeg; for Dolby Vision the configuration box (dvvC, profile 8) is added here, because GPAC's
+MP4Box is no longer packaged on current Ubuntu and ffmpeg does not derive it from raw HEVC with RPUs.
 """
 from __future__ import annotations
 
 import json
 import os
 import shutil
+import struct
 import subprocess
 
 import numpy as np
@@ -20,7 +22,6 @@ from lib import pq_nits
 TOOLS = {
     "hdr10plus": os.environ.get("HDR10PLUS_TOOL", "hdr10plus_tool"),
     "dovi": os.environ.get("DOVI_TOOL", "dovi_tool"),
-    "mp4box": os.environ.get("MP4BOX", "MP4Box"),
 }
 PERCENTILES = [1, 5, 10, 25, 50, 75, 90, 95, 99]
 
@@ -110,8 +111,67 @@ def annexb(mp4: str, out: str) -> None:
 def mux(hevc: str, out: str, fps: tuple[int, int], dv: bool) -> None:
     if os.path.exists(out):
         os.remove(out)
-    opts = f":fps={fps[0]}/{fps[1]}" + (":dvp=8.1" if dv else "")
-    run([TOOLS["mp4box"], "-add", hevc + opts, "-new", out])
+    # No faststart: moov stays after mdat, so growing moov by the dvvC box moves no sample offsets.
+    run(["ffmpeg", "-v", "error", "-y", "-framerate", f"{fps[0]}/{fps[1]}", "-i", hevc, "-c:v", "copy",
+         "-tag:v", "hvc1", "-an", out])
+    if dv:
+        add_dovi_box(out, dv_level(fps))
+
+
+def dv_level(fps: tuple[int, int]) -> int:
+    """Dolby Vision level for 3840 x 2160: 6 up to 24 fps, 7 up to 30, 9 up to 60."""
+    rate = fps[0] / fps[1]
+    return 6 if rate <= 24.01 else 7 if rate <= 30.01 else 9
+
+
+def dovi_record(profile: int = 8, level: int = 6, compatibility: int = 1) -> bytes:
+    """DOVIDecoderConfigurationRecord (24 bytes): version 1.0, RPU + base layer present, no enhancement layer."""
+    flags = (profile << 9) | (level << 3) | (1 << 2) | (0 << 1) | 1
+    return bytes([1, 0]) + flags.to_bytes(2, "big") + bytes([compatibility << 4]) + bytes(19)
+
+
+def add_dovi_box(path: str, level: int) -> None:
+    """Appends a dvvC box to the hvc1 sample entry and grows every enclosing box by its size."""
+    data = bytearray(open(path, "rb").read())
+    box = struct.pack(">I4s", 8 + 24, b"dvvC") + dovi_record(level=level)
+
+    def children(start: int, end: int):
+        i = start
+        while i + 8 <= end:
+            size, kind = struct.unpack(">I4s", data[i:i + 8])
+            if size < 8:
+                raise SystemExit(f"{path}: unsupported box size {size} at {i}")
+            yield i, size, kind
+            i += size
+
+    def find(start: int, end: int, kind: bytes) -> tuple[int, int]:
+        for i, size, k in children(start, end):
+            if k == kind:
+                return i, size
+        raise SystemExit(f"{path}: no {kind.decode()} box")
+
+    chain = []
+    moov, size = find(0, len(data), b"moov")
+    mdat, _ = find(0, len(data), b"mdat")
+    if moov < mdat:
+        raise SystemExit(f"{path}: moov before mdat; inserting would move the sample data")
+    chain.append(moov)
+    pos, end = moov + 8, moov + size
+    for kind in (b"trak", b"mdia", b"minf", b"stbl", b"stsd"):
+        pos, size = find(pos, end, kind)
+        chain.append(pos)
+        pos, end = pos + 8, pos + size
+    # stsd is a full box with an entry count; its first entry is the sample entry.
+    entry = pos + 8
+    entry_size, entry_kind = struct.unpack(">I4s", data[entry:entry + 8])
+    if entry_kind != b"hvc1":
+        raise SystemExit(f"{path}: sample entry is {entry_kind!r}, expected hvc1")
+    chain.append(entry)
+    data[entry + entry_size:entry + entry_size] = box
+    for start in chain:
+        (old,) = struct.unpack(">I", data[start:start + 4])
+        data[start:start + 4] = struct.pack(">I", old + len(box))
+    open(path, "wb").write(bytes(data))
 
 
 def make_hdr10plus(base_mp4: str, out: str, stats: list[dict], fps, work: str) -> None:
@@ -160,7 +220,8 @@ def verify_dovi(out: str, frames: int, work: str) -> str:
     conf = next((d for d in info.get("side_data_list", []) if "DOVI" in d.get("side_data_type", "").upper()), None)
     if not conf:
         raise SystemExit(f"{out}: no Dolby Vision configuration record (dvcC) in the MP4")
-    want = {"dv_profile": 8, "rpu_present_flag": 1, "bl_present_flag": 1, "dv_bl_signal_compatibility_id": 1}
+    want = {"dv_version_major": 1, "dv_profile": 8, "rpu_present_flag": 1, "el_present_flag": 0,
+            "bl_present_flag": 1, "dv_bl_signal_compatibility_id": 1}
     wrong = {k: (conf.get(k), v) for k, v in want.items() if conf.get(k) != v}
     if wrong:
         raise SystemExit(f"{out}: Dolby Vision configuration mismatch (got, expected): {wrong}")

@@ -162,7 +162,7 @@ fun PlayerScreen(patterns: List<Pair<PatternFile, File>>, startIndex: Int) {
             modifier = Modifier.fillMaxSize(),
         )
         val current = patterns[index].first
-        val text = PatternCatalog.text(current.id)
+        val text = PatternCatalog.text(current)
         AnimatedVisibility(
             visible = showInfo || error != null,
             enter = fadeIn(spring(stiffness = 400f)),
