@@ -101,7 +101,7 @@ class MainActivity : ComponentActivity() {
                 ready.manifest.patterns.map { p ->
                     Log.i(TAG, "decoder ${p.id}: checking")
                     DecoderCheck.check(patterns.file(p), p.probes).also { r ->
-                        Log.i(TAG, "decoder ${p.id}: ${r.decoder} checked=${r.checked} mismatches=${r.mismatches} error=${r.error}")
+                        Log.i(TAG, "decoder ${p.id}: ${r.decoder} bits=${r.bits} checked=${r.checked} mismatches=${r.mismatches} error=${r.error}")
                     }
                 }
             }

@@ -80,6 +80,7 @@
     <string name="patterns_retry">לנסות שוב</string>
     <string name="patterns_decoder_checking">בודק את מפענח החומרה…</string>
     <string name="patterns_decoder_ok">מפענח החומרה (%1$s) משחזר את כל %2$d התבניות ביט לביט.</string>
+    <string name="patterns_decoder_ok_8bit">מפענח החומרה (%1$s) משחזר את כל %2$d התבניות (נבדק ב-8 ביט: המפענח נותן לאפליקציות רק עותק של 8 ביט).</string>
     <string name="patterns_decoder_bad">מפענח החומרה (%1$s) שינה ערכי פיקסלים: %2$s</string>
     <string name="patterns_decoder_unavailable">בדיקת המפענח לא אפשרית בקופסה הזו: %1$s</string>
     <string name="player_hint">◀ ▶ תבנית  ·  OK הסתרה  ·  Back יציאה</string>

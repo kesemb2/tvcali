@@ -1,6 +1,7 @@
 package io.github.kesemb2.calibrate.patterns
 
 import android.media.MediaCodec
+import android.os.Build
 import android.media.MediaCodecInfo
 import android.media.MediaCodecList
 import android.media.MediaExtractor
@@ -20,6 +21,8 @@ object DecoderCheck {
         val checked: Int,
         val mismatches: List<String>,
         val error: String? = null,
+        /** 10 when the decoder gave us its real 10-bit output (P010); 8 when only an 8-bit conversion was available. */
+        val bits: Int = 0,
     ) {
         val ok: Boolean get() = error == null && mismatches.isEmpty() && checked > 0
     }
@@ -27,7 +30,19 @@ object DecoderCheck {
     private const val TIMEOUT_US = 10_000L
     private const val DEADLINE_MS = 8_000L
 
+    /**
+     * Asks for P010 (the decoder's real 10-bit output, API 33+) first. Codec2 decoders asked for "flexible YUV"
+     * hand out an 8-bit conversion (seen on the Homatics), which can only be compared to within one code.
+     */
     fun check(file: File, probes: List<Probe>): Result {
+        if (Build.VERSION.SDK_INT >= 33) {
+            val p010 = run(file, probes, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUVP010)
+            if (p010.bits == 10) return p010
+        }
+        return run(file, probes, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible)
+    }
+
+    private fun run(file: File, probes: List<Probe>, colorFormat: Int): Result {
         val extractor = MediaExtractor()
         var codec: MediaCodec? = null
         var name: String? = null
@@ -40,7 +55,7 @@ object DecoderCheck {
             val format = extractor.getTrackFormat(track)
             name = MediaCodecList(MediaCodecList.REGULAR_CODECS).findDecoderForFormat(format)
                 ?: return Result(null, 0, emptyList(), "no decoder for this format")
-            format.setInteger(MediaFormat.KEY_COLOR_FORMAT, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible)
+            format.setInteger(MediaFormat.KEY_COLOR_FORMAT, colorFormat)
             codec = MediaCodec.createByCodecName(name).apply {
                 configure(format, null, null, 0)
                 start()
@@ -91,12 +106,16 @@ object DecoderCheck {
             val buf = plane.buffer.duplicate().order(ByteOrder.LITTLE_ENDIAN)
             val rowStride = plane.rowStride
             val pixelStride = plane.pixelStride
-            if (pixelStride != 2) return Result(name, 0, emptyList(), "8-bit output (pixel stride $pixelStride)")
+            val tenBit = pixelStride == 2
             // P010 keeps the 10 bits in the top of each 16-bit word; some decoders keep them at the bottom.
-            fun luma(x: Int, y: Int): Int {
-                val raw = buf.getShort(y * rowStride + x * pixelStride).toInt() and 0xFFFF
-                return if (raw > 1023) raw ushr 6 else raw
+            fun luma(x: Int, y: Int): Int = if (tenBit) {
+                val raw = buf.getShort(y * rowStride + x * 2).toInt() and 0xFFFF
+                if (raw > 1023) raw ushr 6 else raw
+            } else {
+                buf.get(y * rowStride + x * pixelStride).toInt() and 0xFF
             }
+            // In 8 bits the expected value is the 10-bit code / 4, and the decoder's own rounding may differ by one.
+            fun matches(v: Int, y10: Int) = if (tenBit) v == y10 else kotlin.math.abs(v * 4 - y10) <= 4
             val mismatches = mutableListOf<String>()
             var checked = 0
             for (p in probes) {
@@ -109,14 +128,14 @@ object DecoderCheck {
                     while (x < p.x + p.w && x < it.width) {
                         val v = luma(x, y)
                         checked++
-                        if (v != p.y10 && bad == null) bad = v
+                        if (!matches(v, p.y10) && bad == null) bad = if (tenBit) v else v * 4
                         x += stepX
                     }
                     y += stepY
                 }
                 if (bad != null) mismatches += "${p.name}: expected ${p.y10}, got $bad"
             }
-            return Result(name, checked, mismatches)
+            return Result(name, checked, mismatches, bits = if (tenBit) 10 else 8)
         }
     }
 }

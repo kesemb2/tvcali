@@ -35,7 +35,7 @@ import io.github.kesemb2.calibrate.ui.theme.LocalGlassType
 import io.github.kesemb2.calibrate.ui.theme.Spacing
 
 /** Result of the decoder check over all patterns: null while running. */
-data class DecoderSummary(val decoder: String?, val patterns: Int, val problems: List<String>, val error: String?)
+data class DecoderSummary(val decoder: String?, val patterns: Int, val problems: List<String>, val error: String?, val bits: Int)
 
 fun summarize(results: List<DecoderCheck.Result>): DecoderSummary {
     val error = results.firstOrNull { it.error != null }?.error
@@ -44,6 +44,7 @@ fun summarize(results: List<DecoderCheck.Result>): DecoderSummary {
         patterns = results.size,
         problems = results.flatMap { it.mismatches },
         error = error,
+        bits = results.minOfOrNull { it.bits } ?: 0,
     )
 }
 
@@ -113,7 +114,8 @@ private fun DecoderLine(d: DecoderSummary?) {
         d.error != null -> Status.Warn to stringResource(R.string.patterns_decoder_unavailable, d.error)
         d.problems.isNotEmpty() ->
             Status.Fail to stringResource(R.string.patterns_decoder_bad, d.decoder ?: "?", d.problems.take(3).joinToString("; "))
-        else -> Status.Pass to stringResource(R.string.patterns_decoder_ok, d.decoder ?: "?", d.patterns)
+        d.bits == 10 -> Status.Pass to stringResource(R.string.patterns_decoder_ok, d.decoder ?: "?", d.patterns)
+        else -> Status.Pass to stringResource(R.string.patterns_decoder_ok_8bit, d.decoder ?: "?", d.patterns)
     }
     Row(verticalAlignment = Alignment.CenterVertically) {
         StatusDot(status)

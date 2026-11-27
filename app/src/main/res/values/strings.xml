@@ -80,6 +80,7 @@
     <string name="patterns_retry">Try again</string>
     <string name="patterns_decoder_checking">Checking the hardware decoder…</string>
     <string name="patterns_decoder_ok">Hardware decoder (%1$s) reproduces all %2$d patterns bit for bit.</string>
+    <string name="patterns_decoder_ok_8bit">Hardware decoder (%1$s) reproduces all %2$d patterns (checked in 8 bits: the decoder hands apps only an 8-bit copy).</string>
     <string name="patterns_decoder_bad">Hardware decoder (%1$s) changed pixel values: %2$s</string>
     <string name="patterns_decoder_unavailable">Decoder check not possible on this box: %1$s</string>
     <string name="player_hint">◀ ▶ pattern  ·  OK hide  ·  Back exit</string>
