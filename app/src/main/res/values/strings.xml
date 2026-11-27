@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Calibrate</string>
+
+    <!-- Home -->
+    <string name="home_subtitle">Picture chain checks, test patterns and a calibration guide for your TV</string>
+    <string name="home_chain">Signal chain check</string>
+    <string name="home_chain_desc">What the box knows about the TV: resolution, refresh rates, HDR and Dolby Vision</string>
+    <string name="home_patterns">Test patterns</string>
+    <string name="home_patterns_desc">Pixel-exact 4K SDR and HDR10 patterns</string>
+    <string name="home_wizard">Calibration guide</string>
+    <string name="home_wizard_desc">Step by step through the TV settings, for SDR, HDR10 and Dolby Vision</string>
+    <string name="coming_in_stage">Coming in stage %1$d</string>
+    <string name="version">Version %1$s</string>
+
+    <!-- Chain check -->
+    <string name="chain_title">Signal chain check</string>
+    <string name="chain_summary">%1$d OK · %2$d to check · %3$d to fix</string>
+    <string name="chain_rerun">Check again</string>
+    <string name="chain_sources">Sources (raw values)</string>
+    <string name="chain_sources_note">What each source returned. Some are blocked for apps on this box; the checks combine the ones that work.</string>
+    <string name="chain_loading">Checking…</string>
+
+    <string name="status_pass">OK</string>
+    <string name="status_warn">Check</string>
+    <string name="status_fail">Fix</string>
+    <string name="status_info">Info</string>
+
+    <string name="check_resolution">Output resolution</string>
+    <string name="check_refresh_rates">4K refresh rates</string>
+    <string name="check_hdr10">HDR10</string>
+    <string name="check_dolby_vision">Dolby Vision</string>
+    <string name="check_other_hdr">Other HDR formats</string>
+    <string name="check_edid_luminance">Brightness declared by the TV (EDID)</string>
+    <string name="check_match_frame_rate">Match content frame rate</string>
+    <string name="check_hdr_conversion">Match dynamic range (HDR conversion)</string>
+    <string name="check_disabled_hdr">HDR formats turned off on the box</string>
+    <string name="check_hdmi_output">HDMI output format now</string>
+    <string name="check_decoders">Video decoders</string>
+
+    <string name="outcome_res_4k">The box sends 4K. Test patterns can be shown pixel for pixel.</string>
+    <string name="outcome_res_low">The box is not sending 4K. On the box: Settings › Display &amp; Sound › Advanced display settings › Resolution › 2160p.</string>
+    <string name="outcome_res_unknown">The current mode could not be read.</string>
+    <string name="outcome_rates_all">24, 25, 50 and 60 Hz are all available in 4K, so films and TV can play at their own rate.</string>
+    <string name="outcome_rates_no24">No 24 Hz mode in 4K: films will judder. Something in the chain (Sync Box, soundbar, cable) is limiting the modes.</string>
+    <string name="outcome_rates_no_pal">25 or 50 Hz is missing in 4K: European and Israeli broadcasts will judder.</string>
+    <string name="outcome_rates_unknown">The box shows apps only its current mode. The practical 24 Hz test (stage 2) checks frame rate switching for real.</string>
+    <string name="outcome_hdr10_ok">The TV accepts HDR10 through the chain.</string>
+    <string name="outcome_hdr10_missing">HDR10 is not reported. Check that HDMI 2 is set to the enhanced / HDMI 2.1 format on the TV and that the Sync Box and soundbar pass HDR.</string>
+    <string name="outcome_dv_ok">The TV accepts Dolby Vision through the chain.</string>
+    <string name="outcome_dv_ok_hidden">The HDMI driver sees Dolby Vision from the TV. Android hides it from apps on this box, which is harmless: players use the driver.</string>
+    <string name="outcome_dv_missing">Dolby Vision is not reported. The Hue Sync Box, the soundbar or the cable is probably blocking it: in the Hue app turn on Dolby Vision for this input, check the soundbar\'s 4K/HDR passthrough, use an Ultra High Speed cable.</string>
+    <string name="outcome_other_hdr_info">Formats that are nice to have; calibration uses HDR10 and Dolby Vision.</string>
+    <string name="outcome_lum_ok">The TV declares its peak, average and minimum brightness.</string>
+    <string name="outcome_lum_empty">The EDID declares no brightness values. The TV does its own tone mapping so this is usually harmless; the soundbar or Sync Box may be replacing the TV\'s EDID.</string>
+    <string name="outcome_lum_default">These look like Android\'s defaults (peak = average, minimum 0), not values from the TV. The raw EDID is not readable by apps on this box; earlier adb showed it declares none. Harmless: the TV does its own tone mapping.</string>
+    <string name="outcome_lum_unknown">The declared brightness could not be read.</string>
+    <string name="outcome_match_always">On: the box switches to the content\'s frame rate (for example 24 Hz for films).</string>
+    <string name="outcome_match_seamless">Set to \"seamless only\". Over HDMI switching is never seamless, so in practice it never switches. On the box: Settings › Display &amp; Sound › Advanced display settings › Match content frame rate › Always.</string>
+    <string name="outcome_match_never">Off: films play at 60 Hz and judder. On the box: Settings › Display &amp; Sound › Advanced display settings › Match content frame rate › Always.</string>
+    <string name="outcome_match_unknown">This setting could not be read. You will be asked about it in the summary (stage 2).</string>
+    <string name="outcome_conv_passthrough">Passthrough: HDR content reaches the TV as it is.</string>
+    <string name="outcome_conv_system">The system may convert HDR formats. For calibration choose passthrough (on the box: Settings › Display &amp; Sound › Advanced display settings › HDR format preference).</string>
+    <string name="outcome_conv_force">The box forces one HDR output format, so the TV never sees the content\'s own format. Switch to passthrough.</string>
+    <string name="outcome_conv_unknown">This box does not report HDR conversion.</string>
+    <string name="outcome_disabled_none">No HDR format is turned off.</string>
+    <string name="outcome_disabled_some">These formats are turned off on the box: content in them reaches the TV converted or as SDR. Turn them back on in the box\'s display settings.</string>
+    <string name="outcome_out_info">The colour format the box sends right now. For HDR it should switch to 10 or 12 bit; the HDR test in stage 2 checks this while HDR plays.</string>
+    <string name="outcome_out_unknown">The HDMI output format is not readable by apps on this box.</string>
+    <string name="outcome_dec_ok">Hardware decoders for 4K HEVC 10-bit and Dolby Vision are present.</string>
+    <string name="outcome_dec_no_dv">No Dolby Vision decoder is reported to apps. Dolby Vision may play only as HDR10.</string>
+    <string name="outcome_dec_no_hevc">No 4K60 HEVC 10-bit decoder: the 4K test patterns cannot play.</string>
+    <string name="outcome_dec_unknown">The decoder list could not be read.</string>
+
+    <!-- Patterns -->
+    <string name="patterns_title">Test patterns</string>
+    <string name="patterns_subtitle">4K video patterns, played on the box\'s video plane: pixel for pixel, no upscaling.</string>
+    <string name="patterns_downloading">Downloading test patterns… %1$d%%</string>
+    <string name="patterns_failed">Download failed: %1$s</string>
+    <string name="patterns_retry">Try again</string>
+    <string name="patterns_decoder_checking">Checking the hardware decoder…</string>
+    <string name="patterns_decoder_ok">Hardware decoder (%1$s) reproduces all %2$d patterns bit for bit.</string>
+    <string name="patterns_decoder_bad">Hardware decoder (%1$s) changed pixel values: %2$s</string>
+    <string name="patterns_decoder_unavailable">Decoder check not possible on this box: %1$s</string>
+    <string name="player_hint">◀ ▶ pattern  ·  OK hide  ·  Back exit</string>
+    <string name="player_error">This pattern cannot play: %1$s</string>
+    <string name="pattern_count">%1$d / %2$d</string>
+    <string name="format_sdr">SDR · BT.709</string>
+    <string name="format_hdr10">HDR10 · PQ · BT.2020</string>
+
+    <string name="p_sdr_pluge">PLUGE: black level</string>
+    <string name="p_sdr_pluge_short">Brightness</string>
+    <string name="p_sdr_pluge_howto">Set Brightness. Raise it until bar 12 (below black) shows, then lower it until 12 just disappears while 20 is still faintly visible. Correct: 12 invisible, 20 and 25 visible, and the steps from about 18 up can be told apart. 20 invisible means shadows are crushed (too low); 12 visible means black is grey (too high).</string>
+    <string name="p_sdr_white_clipping">White clipping</string>
+    <string name="p_sdr_white_clipping_short">Contrast</string>
+    <string name="p_sdr_white_clipping_howto">Set Contrast. Correct: every patch up to 235 is distinct from its neighbours and the white stays neutral (no yellow, pink or blue tint). If 230–235 merge, Contrast is too high; lower it until they separate. Patches above 235 may merge: that is allowed.</string>
+    <string name="p_sdr_grayscale">Greyscale and ramps</string>
+    <string name="p_sdr_grayscale_short">Gamma, banding</string>
+    <string name="p_sdr_grayscale_howto">Check gamma and banding. Correct: the 11 steps rise evenly and all look neutral grey; the ramps are smooth, and the dark 0–20 % ramp shows no blotches or coloured bands. In SDR the box sends 8 bits, so the 10-bit and 8-bit ramps look alike: that is expected. Strong steps in both mean processing (noise reduction, dynamic contrast).</string>
+    <string name="p_sdr_color_bars">Colour bars</string>
+    <string name="p_sdr_color_bars_short">Colour, saturation</string>
+    <string name="p_sdr_color_bars_howto">Check colour. Correct: clean bars with sharp borders and no glow; 75 % white looks neutral (a little warm in the Warm setting). Glowing, cartoon-like colours mean a vivid/colour enhancer is on or the colour space is not Auto.</string>
+    <string name="p_sdr_sharpness">Sharpness</string>
+    <string name="p_sdr_sharpness_short">Sharpness, native 4K</string>
+    <string name="p_sdr_sharpness_howto">Set Sharpness. Lower it until no bright or dark halos run along the thin lines on grey. Correct: 1 px lines are distinct and the 1 px checkerboard is a fine, even texture. A flat grey checkerboard means the picture was scaled somewhere; moiré or shimmering means super resolution or sharpening is on.</string>
+    <string name="p_sdr_overscan">Overscan</string>
+    <string name="p_sdr_overscan_short">Picture size</string>
+    <string name="p_sdr_overscan_howto">Check the picture size. Correct: all four outer white edges are visible and the grey frames every 2 px are sharp and separate. A missing edge means the TV crops the picture: turn on Just scan / Screen fit / Overscan off.</string>
+</resources>

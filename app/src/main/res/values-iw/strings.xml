@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Calibrate</string>
+
+    <!-- Home -->
+    <string name="home_subtitle">בדיקת שרשרת התמונה, תבניות בדיקה ומדריך כיול לטלוויזיה</string>
+    <string name="home_chain">בדיקת שרשרת האות</string>
+    <string name="home_chain_desc">מה הקופסה יודעת על הטלוויזיה: רזולוציה, קצבי רענון, HDR ו-Dolby Vision</string>
+    <string name="home_patterns">תבניות בדיקה</string>
+    <string name="home_patterns_desc">תבניות SDR ו-HDR10 מדויקות ב-4K</string>
+    <string name="home_wizard">אשף כיול</string>
+    <string name="home_wizard_desc">שלב אחר שלב בהגדרות הטלוויזיה, ל-SDR, ל-HDR10 ול-Dolby Vision</string>
+    <string name="coming_in_stage">יגיע בשלב %1$d</string>
+    <string name="version">גרסה %1$s</string>
+
+    <!-- Chain check -->
+    <string name="chain_title">בדיקת שרשרת האות</string>
+    <string name="chain_summary">%1$d תקין · %2$d לבדיקה · %3$d לתיקון</string>
+    <string name="chain_rerun">לבדוק שוב</string>
+    <string name="chain_sources">מקורות (ערכים גולמיים)</string>
+    <string name="chain_sources_note">מה כל מקור החזיר. חלק מהמקורות חסומים לאפליקציות בקופסה הזו; הבדיקות משלבות את אלה שעובדים.</string>
+    <string name="chain_loading">בודק…</string>
+
+    <string name="status_pass">תקין</string>
+    <string name="status_warn">לבדיקה</string>
+    <string name="status_fail">לתיקון</string>
+    <string name="status_info">מידע</string>
+
+    <string name="check_resolution">רזולוציית הפלט</string>
+    <string name="check_refresh_rates">קצבי רענון ב-4K</string>
+    <string name="check_hdr10">HDR10</string>
+    <string name="check_dolby_vision">Dolby Vision</string>
+    <string name="check_other_hdr">פורמטי HDR נוספים</string>
+    <string name="check_edid_luminance">בהירות שהטלוויזיה מצהירה (EDID)</string>
+    <string name="check_match_frame_rate">התאמת קצב פריימים</string>
+    <string name="check_hdr_conversion">התאמת טווח דינמי (המרת HDR)</string>
+    <string name="check_disabled_hdr">פורמטי HDR שכבויים בקופסה</string>
+    <string name="check_hdmi_output">פורמט הפלט ב-HDMI כרגע</string>
+    <string name="check_decoders">מפענחי וידאו</string>
+
+    <string name="outcome_res_4k">הקופסה משדרת 4K. אפשר להציג תבניות בדיקה פיקסל לפיקסל.</string>
+    <string name="outcome_res_low">הקופסה לא משדרת 4K. בקופסה: הגדרות › תצוגה וצליל › הגדרות תצוגה מתקדמות › רזולוציה › 2160p.</string>
+    <string name="outcome_res_unknown">לא הצלחתי לקרוא את המצב הנוכחי.</string>
+    <string name="outcome_rates_all">‏24, ‏25, ‏50 ו-60Hz זמינים ב-4K, כך שסרטים ושידורים יכולים להתנגן בקצב שלהם.</string>
+    <string name="outcome_rates_no24">אין מצב 24Hz ב-4K: סרטים יקפצו (judder). משהו בשרשרת (Sync Box, מקרן קול, כבל) מגביל את המצבים.</string>
+    <string name="outcome_rates_no_pal">חסר 25 או 50Hz ב-4K: שידורים מאירופה ומישראל יקפצו.</string>
+    <string name="outcome_rates_unknown">הקופסה מראה לאפליקציות רק את המצב הנוכחי. הבדיקה המעשית של 24Hz (שלב 2) תבדוק מעבר קצב באמת.</string>
+    <string name="outcome_hdr10_ok">הטלוויזיה מקבלת HDR10 דרך השרשרת.</string>
+    <string name="outcome_hdr10_missing">HDR10 לא מדווח. ודא שכניסת HDMI 2 בטלוויזיה מוגדרת לפורמט המשופר (HDMI 2.1), ושה-Sync Box ומקרן הקול מעבירים HDR.</string>
+    <string name="outcome_dv_ok">הטלוויזיה מקבלת Dolby Vision דרך השרשרת.</string>
+    <string name="outcome_dv_ok_hidden">מנהל ה-HDMI רואה Dolby Vision מהטלוויזיה. Android מסתיר את זה מאפליקציות בקופסה הזו, וזה לא מזיק: הנגנים משתמשים במנהל ה-HDMI.</string>
+    <string name="outcome_dv_missing">Dolby Vision לא מדווח. כנראה ה-Hue Sync Box, מקרן הקול או הכבל חוסמים אותו: באפליקציית Hue הפעל Dolby Vision לכניסה הזו, בדוק העברת 4K/HDR במקרן הקול, והשתמש בכבל Ultra High Speed.</string>
+    <string name="outcome_other_hdr_info">פורמטים שנחמד שיש; הכיול משתמש ב-HDR10 וב-Dolby Vision.</string>
+    <string name="outcome_lum_ok">הטלוויזיה מצהירה על הבהירות המרבית, הממוצעת והמזערית שלה.</string>
+    <string name="outcome_lum_empty">ה-EDID לא מצהיר על ערכי בהירות. הטלוויזיה עושה tone mapping בעצמה ולכן זה בדרך כלל לא מזיק; ייתכן שמקרן הקול או ה-Sync Box מחליפים את ה-EDID של הטלוויזיה.</string>
+    <string name="outcome_lum_default">אלה נראים כמו ערכי ברירת המחדל של Android (שיא = ממוצע, מינימום 0), לא ערכים מהטלוויזיה. ה-EDID הגולמי לא קריא לאפליקציות בקופסה הזו, ובבדיקת adb ראינו שהוא לא מצהיר על ערכים. לא מזיק: הטלוויזיה עושה tone mapping בעצמה.</string>
+    <string name="outcome_lum_unknown">לא הצלחתי לקרוא את הבהירות המוצהרת.</string>
+    <string name="outcome_match_always">פעיל: הקופסה עוברת לקצב של התוכן (למשל 24Hz לסרטים).</string>
+    <string name="outcome_match_seamless">מוגדר ל\"רק מעבר חלק\". ב-HDMI המעבר אף פעם לא חלק, אז בפועל אין מעבר. בקופסה: הגדרות › תצוגה וצליל › הגדרות תצוגה מתקדמות › התאמת קצב פריימים › תמיד.</string>
+    <string name="outcome_match_never">כבוי: סרטים מתנגנים ב-60Hz וקופצים. בקופסה: הגדרות › תצוגה וצליל › הגדרות תצוגה מתקדמות › התאמת קצב פריימים › תמיד.</string>
+    <string name="outcome_match_unknown">לא הצלחתי לקרוא את ההגדרה. אשאל עליה במסך הסיכום (שלב 2).</string>
+    <string name="outcome_conv_passthrough">מעבר ישיר (Passthrough): תוכן HDR מגיע לטלוויזיה כמו שהוא.</string>
+    <string name="outcome_conv_system">המערכת עשויה להמיר פורמטי HDR. לכיול בחר מעבר ישיר (בקופסה: הגדרות › תצוגה וצליל › הגדרות תצוגה מתקדמות › העדפת פורמט HDR).</string>
+    <string name="outcome_conv_force">הקופסה כופה פורמט HDR אחד, כך שהטלוויזיה לא רואה את הפורמט המקורי של התוכן. עבור למעבר ישיר.</string>
+    <string name="outcome_conv_unknown">הקופסה לא מדווחת על המרת HDR.</string>
+    <string name="outcome_disabled_none">אף פורמט HDR לא כבוי.</string>
+    <string name="outcome_disabled_some">הפורמטים האלה כבויים בקופסה: תוכן בהם מגיע לטלוויזיה מומר או כ-SDR. הפעל אותם מחדש בהגדרות התצוגה של הקופסה.</string>
+    <string name="outcome_out_info">פורמט הצבע שהקופסה שולחת עכשיו. ב-HDR הוא אמור לעבור ל-10 או 12 ביט; בדיקת ה-HDR בשלב 2 תבדוק את זה בזמן ניגון HDR.</string>
+    <string name="outcome_out_unknown">פורמט הפלט ב-HDMI לא קריא לאפליקציות בקופסה הזו.</string>
+    <string name="outcome_dec_ok">יש מפענחי חומרה ל-HEVC ‏10 ביט ב-4K ול-Dolby Vision.</string>
+    <string name="outcome_dec_no_dv">לא מדווח מפענח Dolby Vision לאפליקציות. ייתכן ש-Dolby Vision יתנגן רק כ-HDR10.</string>
+    <string name="outcome_dec_no_hevc">אין מפענח HEVC ‏10 ביט ל-4K60: תבניות ה-4K לא יוכלו להתנגן.</string>
+    <string name="outcome_dec_unknown">לא הצלחתי לקרוא את רשימת המפענחים.</string>
+
+    <!-- Patterns -->
+    <string name="patterns_title">תבניות בדיקה</string>
+    <string name="patterns_subtitle">תבניות וידאו ב-4K שמתנגנות ב-video plane של הקופסה: פיקסל לפיקסל, בלי upscale.</string>
+    <string name="patterns_downloading">מוריד תבניות בדיקה… %1$d%%</string>
+    <string name="patterns_failed">ההורדה נכשלה: %1$s</string>
+    <string name="patterns_retry">לנסות שוב</string>
+    <string name="patterns_decoder_checking">בודק את מפענח החומרה…</string>
+    <string name="patterns_decoder_ok">מפענח החומרה (%1$s) משחזר את כל %2$d התבניות ביט לביט.</string>
+    <string name="patterns_decoder_bad">מפענח החומרה (%1$s) שינה ערכי פיקסלים: %2$s</string>
+    <string name="patterns_decoder_unavailable">בדיקת המפענח לא אפשרית בקופסה הזו: %1$s</string>
+    <string name="player_hint">◀ ▶ תבנית  ·  OK הסתרה  ·  Back יציאה</string>
+    <string name="player_error">התבנית לא מתנגנת: %1$s</string>
+    <string name="pattern_count">%1$d / %2$d</string>
+    <string name="format_sdr">SDR · BT.709</string>
+    <string name="format_hdr10">HDR10 · PQ · BT.2020</string>
+
+    <string name="p_sdr_pluge">PLUGE: רמת שחור</string>
+    <string name="p_sdr_pluge_short">Brightness</string>
+    <string name="p_sdr_pluge_howto">כוון את Brightness. העלה עד שהפס 12 (מתחת לשחור) נראה, ואז הורד עד ש-12 בדיוק נעלם בזמן ש-20 עדיין נראה בקושי. נכון: 12 לא נראה, 20 ו-25 נראים, ואפשר להבחין בין המדרגות מ-18 בערך ומעלה. אם 20 לא נראה, הצללים נבלעים (נמוך מדי); אם 12 נראה, השחור אפור (גבוה מדי).</string>
+    <string name="p_sdr_white_clipping">White clipping</string>
+    <string name="p_sdr_white_clipping_short">Contrast</string>
+    <string name="p_sdr_white_clipping_howto">כוון את Contrast. נכון: כל משבצת עד 235 נבדלת מהשכנות שלה, והלבן נשאר ניטרלי (בלי גוון צהוב, ורוד או כחול). אם 230–235 מתמזגות, Contrast גבוה מדי; הורד עד שהן נפרדות. משבצות מעל 235 יכולות להתמזג, וזה בסדר.</string>
+    <string name="p_sdr_grayscale">סולם אפורים ורמפות</string>
+    <string name="p_sdr_grayscale_short">גאמה, banding</string>
+    <string name="p_sdr_grayscale_howto">בדוק גאמה ו-banding. נכון: 11 המדרגות עולות באופן אחיד וכולן אפורות ניטרליות; הרמפות חלקות, וברמפה הכהה (0–20%) אין כתמים או פסים צבעוניים. ב-SDR הקופסה משדרת 8 ביט, ולכן הרמפות של 10 ו-8 ביט נראות דומות: זה צפוי. מדרגות חזקות בשתיהן מעידות על עיבוד (Noise reduction, Dynamic contrast).</string>
+    <string name="p_sdr_color_bars">פסי צבע</string>
+    <string name="p_sdr_color_bars_short">צבע, רוויה</string>
+    <string name="p_sdr_color_bars_howto">בדוק צבע. נכון: פסים נקיים עם גבולות חדים ובלי זוהר; הלבן של 75% ניטרלי (חם מעט במצב Warm). צבעים זוהרים ומוגזמים מעידים שמשפר צבע (Vivid) דלוק או שמרחב הצבע לא על Auto.</string>
+    <string name="p_sdr_sharpness">Sharpness</string>
+    <string name="p_sdr_sharpness_short">חדות, 4K native</string>
+    <string name="p_sdr_sharpness_howto">כוון את Sharpness. הורד עד שאין הילות בהירות או כהות לאורך הקווים הדקים על הרקע האפור. נכון: קווים של פיקסל אחד ברורים, והלוח המשובץ של פיקסל אחד נראה כמרקם דק ואחיד. לוח משובץ אפור וחלק אומר שהתמונה עברה scaling איפשהו; moiré או ריצוד אומרים ש-Super resolution או חידוד דלוקים.</string>
+    <string name="p_sdr_overscan">Overscan</string>
+    <string name="p_sdr_overscan_short">גודל תמונה</string>
+    <string name="p_sdr_overscan_howto">בדוק את גודל התמונה. נכון: כל ארבעת הקווים הלבנים החיצוניים נראים, והמסגרות האפורות כל 2 פיקסלים חדות ונפרדות. אם קו חסר, הטלוויזיה חותכת את התמונה: הפעל Just scan / Screen fit / Overscan off.</string>
+</resources>

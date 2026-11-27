@@ -1,0 +1,87 @@
+name: Patterns
+
+# Builds the test pattern videos with ffmpeg/x265, verifies them (ffprobe + bit-exact decode) and publishes them as
+# the release patterns-v<VERSION>. The app downloads that release on first start; nothing is packed into the APK.
+on:
+  push:
+    paths:
+      - 'patterns/**'
+      - '.github/workflows/patterns.yml'
+      - 'app/src/main/res/font/inter.ttf'
+  workflow_dispatch:
+
+concurrency:
+  group: patterns-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  patterns:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    permissions:
+      contents: write
+    env:
+      IS_RELEASE: ${{ (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/claude/calibrate-tv-app-6rjw0v') && github.event_name != 'pull_request' }}
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-python@v6
+        with:
+          python-version: '3.12'
+
+      - name: Install ffmpeg and Python packages
+        run: |
+          sudo apt-get update -q
+          sudo apt-get install -y -q ffmpeg
+          ffmpeg -hide_banner -encoders | grep -q libx265
+          pip install -q -r patterns/requirements.txt
+
+      - name: Build and verify patterns
+        shell: bash
+        run: |
+          set -o pipefail
+          python3 patterns/build.py out 2>&1 | tee build.log
+          {
+            echo '### Test patterns'
+            echo '```'
+            cat build.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Summarize failure
+        if: failure()
+        run: |
+          { echo '### Pattern build failed'; echo '```'; tail -n 20 build.log || true; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: patterns-${{ github.run_number }}
+          path: out/
+          retention-days: 7
+
+      - name: Publish release
+        if: env.IS_RELEASE == 'true'
+        run: |
+          version=$(cat patterns/VERSION)
+          tag="patterns-v$version"
+          if gh release view "$tag" >/dev/null 2>&1; then
+            # Same version already published: allowed only if every pattern is unchanged.
+            gh release download "$tag" -p manifest.json -O published.json
+            python3 - <<'PY'
+          import json, sys
+          old = {p["id"]: p["source_md5"] for p in json.load(open("published.json"))["patterns"]}
+          new = {p["id"]: p["source_md5"] for p in json.load(open("out/manifest.json"))["patterns"]}
+          if old != new:
+              changed = sorted(k for k in old.keys() | new.keys() if old.get(k) != new.get(k))
+              sys.exit(f"::error::Patterns changed ({', '.join(changed)}) but patterns/VERSION is still {sys.argv[1] if len(sys.argv) > 1 else ''}. Bump it.")
+          print("Release already up to date.")
+          PY
+            exit 0
+          fi
+          gh release create "$tag" out/*.mp4 out/manifest.json \
+            --target "$GITHUB_SHA" \
+            --title "Test patterns v$version" \
+            --notes "Test pattern videos for Calibrate, version $version. Downloaded by the app; not meant to be installed." \
+            --latest=false
