@@ -103,7 +103,10 @@
     <string name="p_sdr_color_bars_howto">Check colour. Correct: clean bars with sharp borders and no glow; 75 % white looks neutral (a little warm in the Warm setting). Glowing, cartoon-like colours mean a vivid/colour enhancer is on or the colour space is not Auto.</string>
     <string name="p_sdr_sharpness">Sharpness</string>
     <string name="p_sdr_sharpness_short">Sharpness, native 4K</string>
-    <string name="p_sdr_sharpness_howto">Set Sharpness. Lower it until no bright or dark halos run along the thin lines on grey. Correct: 1 px lines are distinct and the 1 px checkerboard is a fine, even texture. A flat grey checkerboard means the picture was scaled somewhere; moiré or shimmering means super resolution or sharpening is on.</string>
+    <string name="p_sdr_sharpness_howto">Set Sharpness. Lower it until no bright or dark halos run along the thin lines on grey. Native 4K is proven when the 1 px lines are distinct from 20–30 cm. The 1 px checkerboard is the finest detail possible: if it is flat grey even up close, something in the chain filters it (see the Resolution pattern). Moiré or shimmering means super resolution or sharpening is on.</string>
+    <string name="p_sdr_resolution">Resolution (diagnostic)</string>
+    <string name="p_sdr_resolution_short">Which detail survives the chain</string>
+    <string name="p_sdr_resolution_howto">Look from 20–30 cm. Correct: every square shows its pattern. Which ones turn flat grey tells where detail is lost: only the 1 px checkerboards grey while 1 px lines show = a 2D filter (noise reduction) somewhere; diagonal grey too = the same; 2 px grey as well = scaling. Compare with the same file played by the TV\'s own player to tell the box from the TV.</string>
     <string name="p_sdr_overscan">Overscan</string>
     <string name="p_sdr_overscan_short">Picture size</string>
     <string name="p_sdr_overscan_howto">Check the picture size. Correct: all four outer white edges are visible and the grey frames every 2 px are sharp and separate. A missing edge means the TV crops the picture: turn on Just scan / Screen fit / Overscan off.</string>

@@ -103,7 +103,10 @@
     <string name="p_sdr_color_bars_howto">בדוק צבע. נכון: פסים נקיים עם גבולות חדים ובלי זוהר; הלבן של 75% ניטרלי (חם מעט במצב Warm). צבעים זוהרים ומוגזמים מעידים שמשפר צבע (Vivid) דלוק או שמרחב הצבע לא על Auto.</string>
     <string name="p_sdr_sharpness">Sharpness</string>
     <string name="p_sdr_sharpness_short">חדות, 4K native</string>
-    <string name="p_sdr_sharpness_howto">כוון את Sharpness. הורד עד שאין הילות בהירות או כהות לאורך הקווים הדקים על הרקע האפור. נכון: קווים של פיקסל אחד ברורים, והלוח המשובץ של פיקסל אחד נראה כמרקם דק ואחיד. לוח משובץ אפור וחלק אומר שהתמונה עברה scaling איפשהו; moiré או ריצוד אומרים ש-Super resolution או חידוד דלוקים.</string>
+    <string name="p_sdr_sharpness_howto">כוון את Sharpness. הורד עד שאין הילות בהירות או כהות לאורך הקווים הדקים על הרקע האפור. 4K native מוכח כשקווים של פיקסל אחד נראים נפרדים ממרחק 20–30 ס"מ. הלוח המשובץ של פיקסל אחד הוא הפרט הכי עדין שיש: אם הוא אפור חלק גם מקרוב, משהו בשרשרת מסנן אותו (ראה תבנית "רזולוציה"). Moiré או ריצוד אומרים ש-Super resolution או חידוד דלוקים.</string>
+    <string name="p_sdr_resolution">רזולוציה (אבחון)</string>
+    <string name="p_sdr_resolution_short">איזה פרט שורד את השרשרת</string>
+    <string name="p_sdr_resolution_howto">הסתכל ממרחק 20–30 ס"מ. נכון: כל ריבוע מראה את הדוגמה שלו. איזה ריבוע הופך לאפור חלק מגלה איפה הפרטים הולכים לאיבוד: רק הלוחות של פיקסל אחד אפורים והקווים נראים = מסנן דו-ממדי (Noise reduction) איפשהו בדרך; גם האלכסון אפור = אותו דבר; גם 2 פיקסלים אפור = scaling. השווה לאותו קובץ בנגן של הטלוויזיה עצמה כדי להבדיל בין הקופסה לטלוויזיה.</string>
     <string name="p_sdr_overscan">Overscan</string>
     <string name="p_sdr_overscan_short">גודל תמונה</string>
     <string name="p_sdr_overscan_howto">בדוק את גודל התמונה. נכון: כל ארבעת הקווים הלבנים החיצוניים נראים, והמסגרות האפורות כל 2 פיקסלים חדות ונפרדות. אם קו חסר, הטלוויזיה חותכת את התמונה: הפעל Just scan / Screen fit / Overscan off.</string>

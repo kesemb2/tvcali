@@ -132,7 +132,50 @@ def sharpness() -> Frame:
     f.y[2056:2060, rx0:rx0 + 900] = white
     from lib import Probe
     f.probes.append(Probe("grey field", 1700, 200, 300, 300, grey))
+    # Single pixels of the checkerboard: the app's decoder check proves the box decodes them unchanged.
+    for dx, dy in ((0, 0), (1, 0), (0, 1), (1, 1), (440, 440), (441, 440)):
+        f.probes.append(Probe(f"checker {dx},{dy}", cx0 + dx, cy0 + dy, 1, 1, white if (dx + dy) % 2 == 0 else black))
     return f
+
+
+def resolution() -> Frame:
+    """Diagnostic: checkerboards of 1, 2 and 4 px, 1 px vertical / horizontal / diagonal lines, side by side."""
+    f = Frame()
+    f.background(v8(128))
+    black, white = v8(16), v8(235)
+    from lib import Probe
+    size, gap, top = 600, 140, 420
+    left = (W - (4 * size + 3 * gap)) // 2
+    yy, xx = np.mgrid[0:size, 0:size]
+    tiles = [
+        ("1 px", np.where(((xx // 1) + (yy // 1)) % 2 == 0, white, black)),
+        ("2 px", np.where(((xx // 2) + (yy // 2)) % 2 == 0, white, black)),
+        ("4 px", np.where(((xx // 4) + (yy // 4)) % 2 == 0, white, black)),
+        ("1 px diagonal", np.where((xx + yy) % 4 < 2, white, black)),
+    ]
+    for k, (label, tile) in enumerate(tiles):
+        x0 = left + k * (size + gap)
+        f.y[top:top + size, x0:x0 + size] = tile.astype(np.uint16)
+        f.text(label, x0 + size // 2, top + size + 40, 64, white, anchor="ma")
+        for dx, dy in ((0, 0), (1, 0), (2, 0), (3, 0), (0, 3)):
+            f.probes.append(Probe(f"{label} {dx},{dy}", x0 + dx, top + dy, 1, 1, int(tile[dy, dx])))
+    # Second row: 1 px vertical lines, 1 px horizontal lines, and a 1 px checkerboard at half contrast.
+    top2 = top + size + 200
+    lines = [
+        ("1 px vertical", np.where(xx % 2 == 0, white, black)),
+        ("1 px horizontal", np.where(yy % 2 == 0, white, black)),
+        ("1 px checker, low contrast", np.where((xx + yy) % 2 == 0, v8(150), v8(106))),
+    ]
+    left2 = (W - (3 * size + 2 * gap)) // 2
+    for k, (label, tile) in enumerate(lines):
+        x0 = left2 + k * (size + gap)
+        h = min(size, H - top2 - 140)
+        f.y[top2:top2 + h, x0:x0 + size] = tile[:h].astype(np.uint16)
+        f.text(label, x0 + size // 2, top2 + h + 30, 56, white, anchor="ma")
+    f.text("Look from 20-30 cm: every square should show its pattern, none should be flat grey",
+           W // 2, 160, 64, white, anchor="ma")
+    return f
+
 
 
 def overscan() -> Frame:
@@ -170,4 +213,5 @@ PATTERNS = {
     "sdr_color_bars": color_bars,
     "sdr_sharpness": sharpness,
     "sdr_overscan": overscan,
+    "sdr_resolution": resolution,
 }

@@ -16,6 +16,9 @@ object PatternCatalog {
             R.string.p_sdr_color_bars, R.string.p_sdr_color_bars_short, R.string.p_sdr_color_bars_howto,
         ),
         "sdr_sharpness" to PatternText(R.string.p_sdr_sharpness, R.string.p_sdr_sharpness_short, R.string.p_sdr_sharpness_howto),
+        "sdr_resolution" to PatternText(
+            R.string.p_sdr_resolution, R.string.p_sdr_resolution_short, R.string.p_sdr_resolution_howto,
+        ),
         "sdr_overscan" to PatternText(R.string.p_sdr_overscan, R.string.p_sdr_overscan_short, R.string.p_sdr_overscan_howto),
     )
 

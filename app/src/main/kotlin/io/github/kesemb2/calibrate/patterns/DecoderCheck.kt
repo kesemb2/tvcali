@@ -27,6 +27,10 @@ object DecoderCheck {
         val ok: Boolean get() = error == null && mismatches.isEmpty() && checked > 0
     }
 
+    /** Null until tried; a decoder that refused P010 once is not asked again (each refusal costs the deadline). */
+    @Volatile
+    private var p010Works: Boolean? = null
+
     private const val TIMEOUT_US = 10_000L
     private const val DEADLINE_MS = 8_000L
 
@@ -35,8 +39,9 @@ object DecoderCheck {
      * hand out an 8-bit conversion (seen on the Homatics), which can only be compared to within one code.
      */
     fun check(file: File, probes: List<Probe>): Result {
-        if (Build.VERSION.SDK_INT >= 33) {
+        if (Build.VERSION.SDK_INT >= 33 && p010Works != false) {
             val p010 = run(file, probes, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUVP010)
+            p010Works = p010.bits == 10
             if (p010.bits == 10) return p010
         }
         return run(file, probes, MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Flexible)
