@@ -110,4 +110,49 @@
     <string name="p_sdr_overscan">Overscan</string>
     <string name="p_sdr_overscan_short">גודל תמונה</string>
     <string name="p_sdr_overscan_howto">בדוק את גודל התמונה. נכון: כל ארבעת הקווים הלבנים החיצוניים נראים, והמסגרות האפורות כל 2 פיקסלים חדות ונפרדות. אם קו חסר, הטלוויזיה חותכת את התמונה: הפעל Just scan / Screen fit / Overscan off.</string>
+
+    <string name="p_hdr_black_clipping">רמת שחור ב-HDR</string>
+    <string name="p_hdr_black_clipping_short">Brightness / פרטי צללים</string>
+    <string name="p_hdr_black_clipping_howto">במצב התמונה של HDR, כוון את Brightness (או Black level / Shadow detail). נכון: הפס 56 (מתחת לשחור) לא נראה, 72 ו-80 נראים בקושי, והמדרגות מ-68 בערך נבדלות. עמעום מקומי עלול לבלוע את המדרגות הקטנות הכי כהות: שפוט עם הגדרת העמעום שבה תצפה.</string>
+    <string name="p_hdr_white_clipping_1000">Tone mapping, ‏1000 ניט</string>
+    <string name="p_hdr_white_clipping_1000_short">בהירות שיא, tone mapping</string>
+    <string name="p_hdr_white_clipping_1000_howto">הטלוויזיה מקבלת מטא-דאטה של מאסטר 1000 ניט. נכון: כל משבצת עד 1000 נבדלת (הטלוויזיה מגיעה לשם או מעגלת בעדינות); מעל זה מותר להן להתמזג. אם כבר 700–1000 מתמזגות, משהו מגביל את הבהירות (Eco, חיישן אור, Dynamic tone mapping חזק מדי).</string>
+    <string name="p_hdr_white_clipping_4000">Tone mapping, ‏4000 ניט</string>
+    <string name="p_hdr_white_clipping_4000_short">מיפוי של מאסטרים בהירים</string>
+    <string name="p_hdr_white_clipping_4000_howto">אותו דבר עם מטא-דאטה של מאסטר 4000 ניט: הטלוויזיה צריכה לדחוס 4000 ניט לטווח שלה, ולכן גם 1500–4000 אמורים להיבדל, בניגודיות נמוכה יותר. אם כל מה שמעל 1000 בערך הוא לבן אחד, הטלוויזיה חותכת במקום למפות.</string>
+    <string name="p_hdr_grayscale">סולם אפורים HDR</string>
+    <string name="p_hdr_grayscale_short">מעקב PQ, ‏banding</string>
+    <string name="p_hdr_grayscale_howto">המדרגות בניט מוחלטים. נכון: עלייה אחידה ונקייה עם אפורים ניטרליים; הרמפות חלקות בלי פסים (כאן 10 ביט חשובים); הרמפה של 0–10 ניט מראה את פרטי הצללים.</string>
+    <string name="p_hdr_dimming_box">עמעום מקומי: ריבוע נע</string>
+    <string name="p_hdr_dimming_box_short">Blooming</string>
+    <string name="p_hdr_dimming_box_howto">ריבוע של 1000 ניט נע על שחור. נכון: הילה קטנה סביבו, השחור סביבו נשאר שחור, והאזורים לא קופצים כשהוא עובר ביניהם. הילה גדולה, או ריבוע שמתעמעם בזמן תנועה: כוון את Local dimming (בדרך כלל High או Medium).</string>
+    <string name="p_hdr_subtitles">עמעום מקומי: כתוביות</string>
+    <string name="p_hdr_subtitles_short">Blooming סביב טקסט</string>
+    <string name="p_hdr_subtitles_howto">כתוביות לבנות על שחור, המקרה הקשה ביותר לעמעום מקומי. נכון: השחור סביב האותיות כמעט זהה לשאר המסך. פס אפור-בהיר סביב השורות הוא blooming: הורד את Local dimming בדרגה, או השאר אם השחור הכללי חשוב לך יותר.</string>
+    <string name="p_hdr_starfield">עמעום מקומי: שדה כוכבים</string>
+    <string name="p_hdr_starfield_short">נקודות בהירות קטנות על שחור</string>
+    <string name="p_hdr_starfield_howto">כוכבים קטנים על שחור. נכון: הכוכבים נראים בבירור, גם הקטנים ביותר, והרקע שחור. כוכבים שנעלמים או מתעמעמים אומרים שהעמעום אגרסיבי מדי; ערפל אפור סביבם הוא blooming.</string>
+    <string name="p_hdr_pan_24p">תנועה ב-24p</string>
+    <string name="p_hdr_pan_24p_short">Judder, ‏MEMC</string>
+    <string name="p_hdr_pan_24p_howto">תנועה ב-23.976fps; התצוגה עוברת ל-24Hz בשבילה. נכון ובמראה קולנועי: תנועה עם קפיצות קלות ואחידות (ה-judder הטבעי של 24p), בלי "אפקט אופרת סבון". תנועה חלקה לגמרי אומרת ש-MEMC דלוק; קפיצות לא אחידות (ארוכה-קצרה) אומרות שהתצוגה נשארה ב-60Hz (‏3:2 pulldown).</string>
+
+    <!-- Frame-rate switch test -->
+    <string name="rate_section_title">בדיקה מעשית: מעבר קצב פריימים</string>
+    <string name="rate_section_desc">מנגן קליפים ב-23.976, ‏25 ו-50fps ובודק שהתצוגה באמת עוברת לקצב שלהם. המסך נכבה לרגע בכל מעבר, וזה תקין. בערך חצי דקה.</string>
+    <string name="rate_run_button">להריץ את הבדיקה</string>
+    <string name="rate_needs_patterns">הבדיקה צריכה את קבצי הבדיקה: פתח קודם את "תבניות בדיקה" כדי שיירדו.</string>
+    <string name="rate_running">בדיקת מעבר קצב · %1$d / %2$d</string>
+    <string name="rate_request_explicit">%1$s fps · בקשה מפורשת (כמו נגן ייעודי)</string>
+    <string name="rate_request_default">%1$s fps · בקשת ברירת המחדל של ExoPlayer (כמו רוב אפליקציות הסטרימינג)</string>
+    <string name="rate_display_now">התצוגה עכשיו: %1$s Hz</string>
+    <string name="rate_blank_note">המסך נכבה לרגע בכל החלפה של מצב HDMI: זה צפוי.</string>
+    <string name="rate_row_explicit">%1$s fps, בקשה מפורשת</string>
+    <string name="rate_row_default">%1$s fps, כמו רוב האפליקציות</string>
+    <string name="rate_outcome_exact">התצוגה עברה בדיוק לקצב של התוכן: תנועה אחידה בלי pulldown.</string>
+    <string name="rate_outcome_nearly">התצוגה עברה ל-24.000Hz במקום 23.976: פריים אחד חוזר בערך כל 42 שניות. כמעט לא מורגש.</string>
+    <string name="rate_outcome_multiple">התצוגה עברה לכפולה של הקצב (למשל 50Hz ל-25fps): כל פריים מוצג פעמיים באופן אחיד. תקין.</string>
+    <string name="rate_outcome_no_switch">התצוגה לא החליפה קצב. ודא ש"התאמת קצב פריימים" בקופסה מוגדרת ל"תמיד", ושה-Sync Box ומקרן הקול מעבירים את המצב הזה.</string>
+    <string name="rate_outcome_wrong">התצוגה עברה לקצב שלא מתאים לתוכן.</string>
+    <string name="rate_outcome_default_no_switch">בבקשת ברירת המחדל (רק אם המעבר חלק) התצוגה לא עברה: ב-HDMI אין מעבר חלק. אפליקציות שמבקשות כך יתנגנו ב-60Hz; זה תלוי באפליקציה, לא בהגדרות שלך.</string>
+    <string name="rate_outcome_default_switched">גם בבקשת ברירת המחדל התצוגה עברה: המערכת מחליפה קצב לכל האפליקציות.</string>
 </resources>

@@ -1,6 +1,8 @@
 package io.github.kesemb2.calibrate.ui.patterns
 
 import android.net.Uri
+import android.view.Surface
+import android.view.SurfaceHolder
 import android.view.SurfaceView
 import androidx.annotation.OptIn
 import androidx.compose.animation.AnimatedVisibility
@@ -51,6 +53,8 @@ import androidx.media3.exoplayer.ExoPlayer
 import io.github.kesemb2.calibrate.R
 import io.github.kesemb2.calibrate.patterns.PatternCatalog
 import io.github.kesemb2.calibrate.patterns.PatternFile
+import io.github.kesemb2.calibrate.ratetest.clearFrameRate
+import io.github.kesemb2.calibrate.ratetest.requestFrameRate
 import io.github.kesemb2.calibrate.ui.components.glassSurface
 import io.github.kesemb2.calibrate.ui.theme.GlassColors
 import io.github.kesemb2.calibrate.ui.theme.LocalGlassType
@@ -99,11 +103,18 @@ fun PlayerScreen(patterns: List<Pair<PatternFile, File>>, startIndex: Int) {
         view.keepScreenOn = true
         onDispose { view.keepScreenOn = false }
     }
+    val surfaceBox = remember { arrayOfNulls<Surface>(1) }
     LaunchedEffect(index) {
         error = null
+        val pattern = patterns[index].first
         player.setMediaItem(MediaItem.fromUri(Uri.fromFile(patterns[index].second)))
         player.prepare()
+        // Moving patterns are judged at their own rate (24p judder); static ones keep the current mode, so browsing
+        // them never costs an HDMI resync.
+        while (surfaceBox[0] == null) kotlinx.coroutines.delay(50)
+        surfaceBox[0]?.let { if (pattern.motion) requestFrameRate(it, pattern.fps) else clearFrameRate(it) }
     }
+    DisposableEffect(Unit) { onDispose { surfaceBox[0]?.let { clearFrameRate(it) } } }
 
     fun step(delta: Int) {
         index = (index + delta + patterns.size) % patterns.size
@@ -134,7 +145,20 @@ fun PlayerScreen(patterns: List<Pair<PatternFile, File>>, startIndex: Int) {
             },
     ) {
         AndroidView(
-            factory = { ctx -> SurfaceView(ctx).also { player.setVideoSurfaceView(it) } },
+            factory = { ctx ->
+                SurfaceView(ctx).also { sv ->
+                    sv.holder.addCallback(object : SurfaceHolder.Callback {
+                        override fun surfaceCreated(holder: SurfaceHolder) {
+                            surfaceBox[0] = holder.surface
+                        }
+                        override fun surfaceChanged(holder: SurfaceHolder, format: Int, width: Int, height: Int) = Unit
+                        override fun surfaceDestroyed(holder: SurfaceHolder) {
+                            surfaceBox[0] = null
+                        }
+                    })
+                    player.setVideoSurfaceView(sv)
+                }
+            },
             modifier = Modifier.fillMaxSize(),
         )
         val current = patterns[index].first

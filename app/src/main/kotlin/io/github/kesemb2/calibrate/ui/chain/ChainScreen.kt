@@ -28,6 +28,11 @@ import io.github.kesemb2.calibrate.diag.CheckId
 import io.github.kesemb2.calibrate.diag.CheckResult
 import io.github.kesemb2.calibrate.diag.Outcome
 import io.github.kesemb2.calibrate.diag.Status
+import io.github.kesemb2.calibrate.diag.formatFps
+import io.github.kesemb2.calibrate.ratetest.RateOutcome
+import io.github.kesemb2.calibrate.ratetest.RateResult
+import io.github.kesemb2.calibrate.ratetest.RateRules
+import io.github.kesemb2.calibrate.ratetest.Request
 import io.github.kesemb2.calibrate.ui.components.FocusCard
 import io.github.kesemb2.calibrate.ui.components.Screen
 import io.github.kesemb2.calibrate.ui.components.StatusChip
@@ -42,7 +47,13 @@ import io.github.kesemb2.calibrate.ui.theme.Spacing
 data class ChainState(val results: List<CheckResult>, val sources: List<Pair<String, String>>)
 
 @Composable
-fun ChainScreen(state: ChainState?, onRerun: () -> Unit) {
+fun ChainScreen(
+    state: ChainState?,
+    onRerun: () -> Unit,
+    rateResults: List<RateResult>?,
+    rateAvailable: Boolean,
+    onRunRateTest: () -> Unit,
+) {
     val type = LocalGlassType.current
     val rerun = remember { FocusRequester() }
     Screen(Modifier.fillMaxSize()) {
@@ -70,6 +81,8 @@ fun ChainScreen(state: ChainState?, onRerun: () -> Unit) {
                     contentPadding = androidx.compose.foundation.layout.PaddingValues(vertical = Spacing.M, horizontal = Spacing.S),
                 ) {
                     items(state.results, key = { it.id }) { CheckRow(it) }
+                    item(key = "rate") { RateSection(rateResults, rateAvailable, onRunRateTest) }
+                    items(rateResults.orEmpty(), key = { "rate-${it.run.clipId}-${it.run.request}" }) { RateRow(it) }
                     item(key = "sources") { SourcesCard(state.sources) }
                 }
             }
@@ -79,32 +92,53 @@ fun ChainScreen(state: ChainState?, onRerun: () -> Unit) {
 }
 
 @Composable
-private fun CheckRow(result: CheckResult) {
+private fun CheckRow(result: CheckResult) =
+    ResultRow(result.status, stringResource(result.id.title()), result.value, stringResource(result.outcome.text()))
+
+@Composable
+private fun RateRow(r: RateResult) = ResultRow(
+    status = RateRules.status(r),
+    title = stringResource(
+        if (r.run.request == Request.Explicit) R.string.rate_row_explicit else R.string.rate_row_default,
+        formatFps(r.run.fps),
+    ),
+    value = RateRules.describe(r),
+    text = stringResource(RateRules.outcome(r).text()),
+)
+
+@Composable
+private fun RateSection(results: List<RateResult>?, available: Boolean, onRun: () -> Unit) {
+    val type = LocalGlassType.current
+    Column(Modifier.fillMaxWidth().padding(top = Spacing.L), verticalArrangement = Arrangement.spacedBy(Spacing.S)) {
+        BasicText(stringResource(R.string.rate_section_title), style = type.title2.copy(color = GlassColors.TextPrimary))
+        BasicText(stringResource(R.string.rate_section_desc), style = type.callout.copy(color = GlassColors.TextSecondary))
+        if (available) {
+            TvButton(stringResource(R.string.rate_run_button), onRun)
+        } else {
+            BasicText(stringResource(R.string.rate_needs_patterns), style = type.callout.copy(color = GlassColors.TextSecondary))
+        }
+    }
+}
+
+@Composable
+private fun ResultRow(status: Status, title: String, value: String, text: String) {
     val type = LocalGlassType.current
     FocusCard(Modifier.fillMaxWidth(), shape = Shapes.Row, focusedScale = 1.015f) { focused ->
         val ink = if (focused) GlassColors.OnFocus else GlassColors.TextPrimary
         val inkSoft = if (focused) GlassColors.OnFocus.copy(alpha = 0.72f) else GlassColors.TextSecondary
         Row(verticalAlignment = Alignment.CenterVertically) {
-            StatusDot(result.status)
-            BasicText(
-                stringResource(result.id.title()),
-                Modifier.padding(start = Spacing.M).weight(1f),
-                style = type.headline.copy(color = ink),
-            )
+            StatusDot(status)
+            BasicText(title, Modifier.padding(start = Spacing.M).weight(1f), style = type.headline.copy(color = ink))
             // Technical values are Latin text; keep them left to right inside Hebrew layout.
             BasicText(
-                result.value,
+                value,
                 Modifier.padding(start = Spacing.L),
                 style = type.callout.copy(color = ink, textDirection = TextDirection.Ltr),
             )
             Spacer(Modifier.width(Spacing.L))
-            StatusChip(result.status, stringResource(result.status.label()), inkSoft)
+            StatusChip(status, stringResource(status.label()), inkSoft)
         }
-        BasicText(
-            stringResource(result.outcome.text()),
-            Modifier.padding(start = 24.dp),
-            style = type.callout.copy(color = inkSoft),
-        )
+        BasicText(text, Modifier.padding(start = 24.dp), style = type.callout.copy(color = inkSoft))
     }
 }
 
@@ -129,6 +163,16 @@ private fun SourcesCard(sources: List<Pair<String, String>>) {
             }
         }
     }
+}
+
+private fun RateOutcome.text(): Int = when (this) {
+    RateOutcome.Exact -> R.string.rate_outcome_exact
+    RateOutcome.NearlyExact -> R.string.rate_outcome_nearly
+    RateOutcome.Multiple -> R.string.rate_outcome_multiple
+    RateOutcome.NoSwitch -> R.string.rate_outcome_no_switch
+    RateOutcome.Wrong -> R.string.rate_outcome_wrong
+    RateOutcome.DefaultNoSwitch -> R.string.rate_outcome_default_no_switch
+    RateOutcome.DefaultSwitched -> R.string.rate_outcome_default_switched
 }
 
 private fun Status.label(): Int = when (this) {

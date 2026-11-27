@@ -83,7 +83,7 @@ fun PatternsScreen(
                         verticalArrangement = Arrangement.spacedBy(Spacing.L),
                         contentPadding = PaddingValues(Spacing.M),
                     ) {
-                        itemsIndexed(state.manifest.patterns, key = { _, p -> p.id }) { i, p ->
+                        itemsIndexed(state.manifest.viewable, key = { _, p -> p.id }) { i, p ->
                             val text = PatternCatalog.text(p.id)
                             FocusCard(
                                 modifier = (if (i == 0) Modifier.focusRequester(first) else Modifier).height(112.dp),

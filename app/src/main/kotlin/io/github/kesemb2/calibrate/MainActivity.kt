@@ -1,5 +1,6 @@
 package io.github.kesemb2.calibrate
 
+import android.content.Context
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -14,6 +15,9 @@ import io.github.kesemb2.calibrate.diag.Checks
 import io.github.kesemb2.calibrate.diag.Report
 import io.github.kesemb2.calibrate.patterns.DecoderCheck
 import io.github.kesemb2.calibrate.patterns.PatternStore
+import io.github.kesemb2.calibrate.ratetest.RateResult
+import io.github.kesemb2.calibrate.ratetest.RateRules
+import io.github.kesemb2.calibrate.ratetest.RateTestScreen
 import io.github.kesemb2.calibrate.ui.chain.ChainScreen
 import io.github.kesemb2.calibrate.ui.chain.ChainState
 import io.github.kesemb2.calibrate.ui.home.HomeScreen
@@ -29,20 +33,27 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-/** Screens, newest last. The UI language follows the TV (values-iw for Hebrew, RTL from the locale). */
+/** Screens, newest last. The UI is always Hebrew (AppLocale). */
 sealed interface Destination {
     data object Home : Destination
     data object Chain : Destination
     data object Patterns : Destination
     data class Player(val index: Int) : Destination
+    data object RateTest : Destination
 }
 
 class MainActivity : ComponentActivity() {
+
+    /** Always Hebrew and right to left (see AppLocale). */
+    override fun attachBaseContext(newBase: Context) {
+        super.attachBaseContext(AppLocale.wrap(newBase))
+    }
 
     private val scope = MainScope()
     private val stack = mutableStateOf<List<Destination>>(listOf(Destination.Home))
     private val chain = mutableStateOf<ChainState?>(null)
     private val decoder = mutableStateOf<DecoderSummary?>(null)
+    private val rateResults = mutableStateOf<List<RateResult>?>(null)
     private lateinit var patterns: PatternStore
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -70,7 +81,26 @@ class MainActivity : ComponentActivity() {
                             open(Destination.Patterns)
                         },
                     )
-                    Destination.Chain -> ChainScreen(chain.value, onRerun = ::runChainCheck)
+                    Destination.Chain -> ChainScreen(
+                        state = chain.value,
+                        onRerun = ::runChainCheck,
+                        rateResults = rateResults.value,
+                        rateAvailable = (patternState as? PatternStore.State.Ready)?.manifest?.rateTests?.isNotEmpty() == true,
+                        onRunRateTest = { open(Destination.RateTest) },
+                    )
+                    Destination.RateTest -> {
+                        val ready = patternState as? PatternStore.State.Ready
+                        if (ready != null) {
+                            val clips = ready.manifest.rateTests
+                            val runs = RateRules.plan(clips.map { it.id to it.fps })
+                                .map { run -> run to patterns.file(clips.first { it.id == run.clipId }) }
+                            RateTestScreen(runs) { results ->
+                                rateResults.value = results
+                                results.forEach { Log.i(TAG, "rate ${RateRules.status(it)} ${it.run.request}: ${RateRules.describe(it)}") }
+                                if (stack.value.lastOrNull() == Destination.RateTest) stack.value = stack.value.dropLast(1)
+                            }
+                        }
+                    }
                     Destination.Patterns -> PatternsScreen(
                         state = patternState,
                         decoder = decoder.value,
@@ -80,7 +110,7 @@ class MainActivity : ComponentActivity() {
                     is Destination.Player -> {
                         val ready = patternState as? PatternStore.State.Ready
                         if (ready != null) {
-                            PlayerScreen(ready.manifest.patterns.map { it to patterns.file(it) }, d.index)
+                            PlayerScreen(ready.manifest.viewable.map { it to patterns.file(it) }, d.index)
                         }
                     }
                 }
@@ -98,7 +128,7 @@ class MainActivity : ComponentActivity() {
             val ready = patterns.state.value as? PatternStore.State.Ready ?: return@launch
             if (decoder.value != null) return@launch
             val results = withContext(Dispatchers.IO) {
-                ready.manifest.patterns.map { p ->
+                ready.manifest.patterns.filter { it.probes.isNotEmpty() }.map { p ->
                     Log.i(TAG, "decoder ${p.id}: checking")
                     DecoderCheck.check(patterns.file(p), p.probes).also { r ->
                         Log.i(TAG, "decoder ${p.id}: ${r.decoder} bits=${r.bits} checked=${r.checked} mismatches=${r.mismatches} error=${r.error}")

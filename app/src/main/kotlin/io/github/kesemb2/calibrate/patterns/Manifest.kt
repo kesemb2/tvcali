@@ -13,9 +13,21 @@ data class PatternFile(
     /** "sdr", "hdr10" … */
     val format: String,
     val probes: List<Probe>,
-)
+    /** "pattern" (listed for the user) or "ratetest" (clips for the frame-rate switch test). */
+    val role: String = "pattern",
+    /** Moving pictures: the player asks the display to switch to their frame rate. */
+    val motion: Boolean = false,
+    val fpsNum: Int = 24000,
+    val fpsDen: Int = 1001,
+) {
+    val fps: Float get() = fpsNum.toFloat() / fpsDen
+}
 
 data class Manifest(val version: Int, val width: Int, val height: Int, val patterns: List<PatternFile>) {
+    /** What the user browses and plays. */
+    val viewable: List<PatternFile> get() = patterns.filter { it.role == "pattern" }
+    val rateTests: List<PatternFile> get() = patterns.filter { it.role == "ratetest" }
+
     companion object {
         fun parse(json: String): Manifest {
             val o = JSONObject(json)
@@ -37,6 +49,10 @@ data class Manifest(val version: Int, val width: Int, val height: Int, val patte
                             val q = probes.getJSONObject(j)
                             Probe(q.getString("name"), q.getInt("x"), q.getInt("y"), q.getInt("w"), q.getInt("h"), q.getInt("y10"))
                         },
+                        role = p.optString("role", "pattern"),
+                        motion = p.optBoolean("motion", false),
+                        fpsNum = p.optInt("fps_num", 24000),
+                        fpsDen = p.optInt("fps_den", 1001),
                     )
                 },
             )

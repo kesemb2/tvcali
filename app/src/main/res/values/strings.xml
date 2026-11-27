@@ -110,4 +110,49 @@
     <string name="p_sdr_overscan">Overscan</string>
     <string name="p_sdr_overscan_short">Picture size</string>
     <string name="p_sdr_overscan_howto">Check the picture size. Correct: all four outer white edges are visible and the grey frames every 2 px are sharp and separate. A missing edge means the TV crops the picture: turn on Just scan / Screen fit / Overscan off.</string>
+
+    <string name="p_hdr_black_clipping">HDR black level</string>
+    <string name="p_hdr_black_clipping_short">Brightness / shadow detail</string>
+    <string name="p_hdr_black_clipping_howto">In HDR picture mode, set Brightness (or Black level / Shadow detail). Correct: bar 56 (below black) is invisible, 72 and 80 are faintly visible, and the steps from about 68 up can be told apart. Local dimming may swallow the darkest small steps: judge with the dimming setting you will watch with.</string>
+    <string name="p_hdr_white_clipping_1000">Tone mapping, 1000 nits</string>
+    <string name="p_hdr_white_clipping_1000_short">Peak brightness, tone mapping</string>
+    <string name="p_hdr_white_clipping_1000_howto">The TV receives metadata for a 1000-nit master. Correct: every patch up to 1000 is distinct (the TV reaches it or rolls off gently); above that they may merge. If 700–1000 already merge, brightness is being limited (Eco, light sensor, dynamic tone mapping set too strong).</string>
+    <string name="p_hdr_white_clipping_4000">Tone mapping, 4000 nits</string>
+    <string name="p_hdr_white_clipping_4000_short">Tone mapping of bright masters</string>
+    <string name="p_hdr_white_clipping_4000_howto">The same with metadata for a 4000-nit master: the TV should compress 4000 nits into its own range, so 1500–4000 should still be distinguishable, with less contrast. If everything above about 1000 is one white, the TV clips instead of mapping.</string>
+    <string name="p_hdr_grayscale">HDR greyscale</string>
+    <string name="p_hdr_grayscale_short">PQ tracking, banding</string>
+    <string name="p_hdr_grayscale_howto">Steps in absolute nits. Correct: an even, clean rise with neutral greys; the ramps are smooth without bands (this is where 10 bits matter); the 0–10 nit ramp shows the shadow detail.</string>
+    <string name="p_hdr_dimming_box">Local dimming: moving box</string>
+    <string name="p_hdr_dimming_box_short">Blooming</string>
+    <string name="p_hdr_dimming_box_howto">A 1000-nit box glides over black. Correct: little halo around it, the black around it stays black, and zones do not jump as it crosses them. A large halo, or a box that dims while moving: adjust Local dimming (usually High or Medium).</string>
+    <string name="p_hdr_subtitles">Local dimming: subtitles</string>
+    <string name="p_hdr_subtitles_short">Blooming around text</string>
+    <string name="p_hdr_subtitles_howto">White subtitles on black, the hardest case for local dimming. Correct: the black around the letters is almost the same as the rest of the screen. A light-grey band around the lines is blooming: lower Local dimming one step, or keep it if overall black matters more to you.</string>
+    <string name="p_hdr_starfield">Local dimming: starfield</string>
+    <string name="p_hdr_starfield_short">Small highlights on black</string>
+    <string name="p_hdr_starfield_howto">Small stars on black. Correct: the stars are clearly visible, even the smallest, and the background is black. Stars that vanish or dim mean the dimming is too aggressive; a grey haze around them is blooming.</string>
+    <string name="p_hdr_pan_24p">Motion at 24p</string>
+    <string name="p_hdr_pan_24p_short">Judder, MEMC</string>
+    <string name="p_hdr_pan_24p_howto">A pan at 23.976 fps; the display switches to 24 Hz for it. Film-like and correct: motion with slight, even steps (the natural judder of 24p) and no soap-opera look. Perfectly smooth motion means MEMC is on; uneven steps (long-short) mean the display stayed at 60 Hz (3:2 pulldown).</string>
+
+    <!-- Frame-rate switch test -->
+    <string name="rate_section_title">Practical test: frame-rate switching</string>
+    <string name="rate_section_desc">Plays clips at 23.976, 25 and 50 fps and checks that the display really switches to their rate. The screen blanks for a moment at each switch: that is normal. About half a minute.</string>
+    <string name="rate_run_button">Run the test</string>
+    <string name="rate_needs_patterns">The test needs the test files: open Test patterns first so they download.</string>
+    <string name="rate_running">Frame-rate test · %1$d / %2$d</string>
+    <string name="rate_request_explicit">%1$s fps · explicit request (like a dedicated player)</string>
+    <string name="rate_request_default">%1$s fps · ExoPlayer\'s default request (like most streaming apps)</string>
+    <string name="rate_display_now">Display now: %1$s Hz</string>
+    <string name="rate_blank_note">The screen blanks for a moment at every HDMI mode change: expected.</string>
+    <string name="rate_row_explicit">%1$s fps, explicit request</string>
+    <string name="rate_row_default">%1$s fps, like most apps</string>
+    <string name="rate_outcome_exact">The display switched to exactly the content\'s rate: even motion, no pulldown.</string>
+    <string name="rate_outcome_nearly">The display switched to 24.000 Hz instead of 23.976: one frame repeats about every 42 s. Rarely noticeable.</string>
+    <string name="rate_outcome_multiple">The display switched to a multiple of the rate (for example 50 Hz for 25 fps): every frame shows twice, evenly. Fine.</string>
+    <string name="rate_outcome_no_switch">The display did not switch. Check that the box\'s Match content frame rate is Always and that the Sync Box and soundbar pass the mode.</string>
+    <string name="rate_outcome_wrong">The display switched to a rate that does not fit the content.</string>
+    <string name="rate_outcome_default_no_switch">With the default request (only if seamless) the display did not switch: over HDMI no switch is seamless. Apps that ask this way play at 60 Hz; that is the app, not your settings.</string>
+    <string name="rate_outcome_default_switched">Even with the default request the display switched: the system switches for every app.</string>
 </resources>
