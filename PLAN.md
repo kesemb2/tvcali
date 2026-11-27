@@ -16,7 +16,7 @@
 | 2 | תבניות HDR10, בדיקת 23.976→24Hz מעשית, מסך סיכום ירוק/צהוב/אדום | **בעבודה** |
 | 3 | מנוע האשף (JSON), זרימת SDR מלאה, שמירת ערכים | — |
 | 4 | זרימות HDR10, HDR10+ ו-Dolby Vision, סיכום וייצוא (QR / טקסט) | — |
-| 5 | תבניות HDR10+ ו-Dolby Vision 8.1 (dovi_tool / hdr10plus_tool) | **בבדיקה על הטלוויזיה** (build-17, ‏patterns-v5: 34 קבצים, 6.7MB) |
+| 5 | תבניות HDR10+ ו-Dolby Vision 8.1 (dovi_tool / hdr10plus_tool) | ✅ נבדק על הטלוויזיה (build-17, ‏patterns-v5) |
 | 6 | ליטוש: RTL, נגישות פוקוס, תקציבי גודל וביצועים | — |
 
 כל שלב נגמר ב-APK חתום שמותקן דרך Downloader מ-
@@ -218,6 +218,9 @@ adb -s <BOX_IP>:5555 shell cat /sys/class/amhdmitx/amhdmitx0/attr /sys/class/amh
   ומשווה לערכי ה-probe מה-manifest.
 - 2026-11-27: כל התבניות הסטטיות ב-23.976fps, והנגן לא מבקש החלפת קצב (`VIDEO_CHANGE_FRAME_RATE_STRATEGY_OFF`), כדי
   שמעבר בין תבניות לא יגרום ל-resync של HDMI. בדיקת ה-24Hz והתנועה (שלב 2) יבקשו החלפה במפורש.
+- 2026-11-28: **אומת על הטלוויזיה:** הטלוויזיה מזהה את התבניות כ-`hdmi2|HDR10PLUS` וכ-`hdmi2|DOLBYVISION`
+  (`TvSourcesStatus`). קבצי ה-DV מפוענחים ב-`c2.amlogic.dolby-vision.dvhe.decoder`, ה-HDR10/HDR10+ ב-`c2.amlogic.hevc.decoder`,
+  וכל ה-probes תואמים. כלומר אפשר לכייל את ארבעת המצבים (SDR, HDR10, HDR10+, DV) עם תבניות אמיתיות.
 - 2026-11-28: **HDR10+ ו-Dolby Vision הוקדמו** (חשוב למשתמש לכייל גם אותם; הטלוויזיה שומרת הגדרות נפרדות לכל פורמט).
   כל תבנית HDR מקודדת פעם אחת; `hdr10plus_tool` מזריק ST 2094-40 (פרופיל A, ערכים מהתוכן) ו-`dovi_tool` מזריק RPU
   של 8.1 לאותו זרם lossless. ה-MP4 נארז ב-ffmpeg ותיבת `dvvC` מתווספת בקוד (GPAC הוסר מ-Ubuntu 26.04). בלי B-frames
